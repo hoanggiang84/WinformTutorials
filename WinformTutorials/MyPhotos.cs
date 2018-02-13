@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using TUTORIALS.Library;
 
 namespace WinformTutorials
 {
     public partial class MyPhotos : Form
     {
+        protected PhotoAlbum _album;
+        protected bool _bAlbumChanged;
+
         public MyPhotos()
         {
             InitializeComponent();
-
-            DefineContextMenu();
-        }
-
-        private void DefineContextMenu()
-        {
-
+            _album = new PhotoAlbum();
         }
 
         private void menuExit_Click(object sender, EventArgs e)
@@ -84,6 +83,53 @@ namespace WinformTutorials
         private void menuCenter_Click(object sender, EventArgs e)
         {
             setPhotoSizeMode(PictureBoxSizeMode.Normal);
+        }
+
+        private void menuAdd_Click(object sender, EventArgs e)
+        {
+            var dlg = new OpenFileDialog
+                          {
+                              Title = "Add Photos",
+                              Multiselect = true,
+                              Filter = "Image Files (JPEG, GIF, BMP, etc.)|" +
+                                       "*.jpg;*.jpeg;*.gif;*.bmp;*.tif;*.tiff;*.png|" +
+                                       "JPEG files (*.jpg;*.jpeg)|*.jpg;*.jpeg |" +
+                                       "GIF files  (*.gif)|*.gif |" +
+                                       "BMP files  (*.bmp)|*.bmp |" +
+                                       "TIFF files  (*.tif;*.tiff)|*.tif;*.tiff |" +
+                                       "PNG files  (*.png)|*.png |" +
+                                       "All files  (*.*)|*.*",
+                              InitialDirectory = Environment.CurrentDirectory
+                          };
+
+            if(dlg.ShowDialog() == DialogResult.OK)
+            {
+                var files = dlg.FileNames;
+                updateStatus(string.Format("Loading {0} Files", files.Length));
+                foreach (var photo in 
+                    from s in files 
+                    select new Photograph(s) into photo 
+                    let index = _album.IndexOf(photo) 
+                    where index<0 
+                    select photo)
+                {
+                    _album.Add(photo);
+                    _bAlbumChanged = true;
+                }
+
+                dlg.Dispose();
+                Invalidate();
+            }
+        }
+
+        private void menuRemove_Click(object sender, EventArgs e)
+        {
+            if(_album.Count>0)
+            {
+                _album.RemoveAt(_album.CurrentPosition);
+                _bAlbumChanged = true;
+            }
+            Invalidate();
         }
     }
 }

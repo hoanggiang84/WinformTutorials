@@ -88,5 +88,15 @@ namespace TUTORIALS.Library
                 Clear();
             }
         }
+
+        public virtual int IndexOf(Photograph p)
+        {
+            return List.IndexOf(p);
+        }
+
+        public virtual int Add(Photograph p)
+        {
+            return List.Add(p);
+        }
     }
 }
