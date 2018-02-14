@@ -124,5 +124,36 @@ namespace TUTORIALS.Library
             Save(FileName);
         }
 
+        public void Open(string fileName)
+        {
+            var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            var sr = new StreamReader(fs);
+            int version;
+            if (!int.TryParse(sr.ReadLine(), out version))
+                version = 0;
+
+            try
+            {
+                switch (version)
+                {
+                    case 66:
+                        string name;
+                        do
+                        {
+                            name = sr.ReadLine();
+                            if (!string.IsNullOrWhiteSpace(name))
+                                Add(new Photograph(name));
+                        } while (name!=null);
+                        break;
+                    default:
+                        throw new IOException("Unrecognized album file format");
+                }
+            }
+            finally
+            {
+                sr.Close();
+                fs.Close();
+            }
+        }
     }
 }

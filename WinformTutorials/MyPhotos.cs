@@ -70,7 +70,7 @@ namespace WinformTutorials
             Close();
         }
 
-        private void menuLoad_Click(object sender, EventArgs e)
+        private void menuOpen_Click(object sender, EventArgs e)
         {
             var dlg = new OpenFileDialog
                           {
