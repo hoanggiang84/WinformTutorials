@@ -1,6 +1,6 @@
 ﻿using System;
+using System.IO;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using TUTORIALS.Library;
 
@@ -8,13 +8,61 @@ namespace WinformTutorials
 {
     public partial class MyPhotos : Form
     {
+
+        private static string _defaultDir;
+        private static bool _initializeDir = true;
         protected PhotoAlbum _album;
         protected bool _bAlbumChanged;
+
+  
+        private void SetTitleBar()
+        {
+            var ver = new Version(Application.ProductVersion);
+            if (string.IsNullOrWhiteSpace(_album.FileName))
+            {
+                Text = string.Format("MyPhotos {0:#}.{1:#}", ver.Major, ver.Minor);
+            }
+            else
+            {
+                var baseFile = Path.GetFileNameWithoutExtension(_album.FileName);
+                Text = string.Format("{0} - MyPhotos {1:#}.{2:#}", baseFile, ver.Major, ver.Minor);
+            }
+        }
+
+        private static void InitDefaultDir()
+        {
+            if(string.IsNullOrWhiteSpace(_defaultDir))
+            {
+                _defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                _defaultDir += @"\Album";
+            }
+
+            Directory.CreateDirectory(_defaultDir);
+        }
+
+        public static string DefaultDir
+        {
+            get
+            {
+                if (_initializeDir)
+                {
+                    InitDefaultDir();
+                    _initializeDir = false;
+                }
+                return _defaultDir;
+            }
+
+            set
+            {
+                _defaultDir = value;
+                _initializeDir = true;
+            }
+        }
 
         public MyPhotos()
         {
             InitializeComponent();
-            _album = new PhotoAlbum();
+            menuNew_Click(this,EventArgs.Empty);
         }
 
         private void menuExit_Click(object sender, EventArgs e)
@@ -99,22 +147,21 @@ namespace WinformTutorials
                                        "TIFF files  (*.tif;*.tiff)|*.tif;*.tiff |" +
                                        "PNG files  (*.png)|*.png |" +
                                        "All files  (*.*)|*.*",
-                              InitialDirectory = Environment.CurrentDirectory
+                              InitialDirectory = @"D:\CurrentWork\Tmp"
                           };
 
             if(dlg.ShowDialog() == DialogResult.OK)
             {
                 var files = dlg.FileNames;
                 updateStatus(string.Format("Loading {0} Files", files.Length));
-                foreach (var photo in 
-                    from s in files 
-                    select new Photograph(s) into photo 
-                    let index = _album.IndexOf(photo) 
-                    where index<0 
-                    select photo)
+                foreach (var file in files)
                 {
-                    _album.Add(photo);
-                    _bAlbumChanged = true;
+                    var photo = new Photograph(file);
+                    if(_album.IndexOf(photo) < 0)
+                    {
+                        _album.Add(photo);
+                        _bAlbumChanged = true;
+                    }
                 }
 
                 dlg.Dispose();
@@ -130,6 +177,85 @@ namespace WinformTutorials
                 _bAlbumChanged = true;
             }
             Invalidate();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if(_album.Count>0)
+            {
+                var photo = _album.CurrentPhoto;
+                pbxPhoto.Image = photo.Image;
+
+                updateStatus(photo.FileName);
+                statusImageSize.Text = string.Format("{0:#} x {1:#}", photo.Image.Width, photo.Image.Height);
+                statusFileIndex.Text = string.Format("{0}/{1}", _album.CurrentPosition + 1, _album.Count);
+            }
+            else
+            {
+                pbxPhoto.Image = null;
+                updateStatus("No Photos in Album");
+                statusImageSize.Text = string.Empty;
+                statusFileIndex.Text = string.Empty;
+            }
+
+            statusStrip.Invalidate();
+            base.OnPaint(e);
+        }
+
+        private void menuNext_Click(object sender, EventArgs e)
+        {
+            if(_album.CurrentNext())
+            {
+               Invalidate();
+            }
+        }
+
+        private void menuPrevious_Click(object sender, EventArgs e)
+        {
+            if (_album.CurrentPrev())
+            {
+                Invalidate();
+            }
+        }
+
+        private void menuNew_Click(object sender, EventArgs e)
+        {
+            if(_album != null)
+                _album.Dispose();
+            _album = new PhotoAlbum();
+            SetTitleBar();
+            Invalidate();
+        }
+
+        private void menuSaveAs_Click(object sender, EventArgs e)
+        {
+            var dlg = new SaveFileDialog
+                          {
+                              Title = "Save Album",
+                              DefaultExt = "abm",
+                              Filter = "Album files (*.abm)|*.abm|" + "All files|*.*",
+                              InitialDirectory = DefaultDir,
+                              RestoreDirectory = true
+
+                          };
+            if(dlg.ShowDialog()==DialogResult.OK)
+            {
+                _album.FileName = dlg.FileName;
+                menuSave_Click(sender, e);
+                SetTitleBar();
+            }
+            dlg.Dispose();
+        }
+
+        private void menuSave_Click(object sender, EventArgs e)
+        {
+            if(string.IsNullOrWhiteSpace(_album.FileName))
+                menuSaveAs_Click(sender,e);
+            else
+            {
+                _album.Save();
+                _bAlbumChanged = false;
+            }
         }
     }
 }

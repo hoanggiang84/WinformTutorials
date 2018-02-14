@@ -20,7 +20,7 @@ namespace TUTORIALS.Library
         {
             get
             {
-                if (_bitmap == null)
+                if (_bitmap == null || _bitmap.Equals(InvalidPhotoImage))
                 {
                     try
                     {

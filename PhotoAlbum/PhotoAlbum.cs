@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Drawing;
+using System.IO;
 
 namespace TUTORIALS.Library
 {
@@ -98,5 +98,31 @@ namespace TUTORIALS.Library
         {
             return List.Add(p);
         }
+
+        private const int _CurrentVersion = 66;
+        public void Save(string fileName)
+        {
+            var fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite);
+            var sw = new StreamWriter(fs);
+            try
+            {
+                sw.WriteLine(_CurrentVersion.ToString());
+                foreach (Photograph photo in this)
+                {
+                    sw.WriteLine(photo.FileName);
+                }
+            }
+            finally
+            {
+                sw.Close();
+                fs.Close();
+            }
+        }
+
+        public void Save()
+        {
+            Save(FileName);
+        }
+
     }
 }
