@@ -8,13 +8,9 @@ namespace WinformTutorials
 {
     public partial class MyPhotos : Form
     {
-
-        private static string _defaultDir;
-        private static bool _initializeDir = true;
         protected PhotoAlbum _album;
         protected bool _bAlbumChanged;
 
-  
         private void SetTitleBar()
         {
             var ver = new Version(Application.ProductVersion);
@@ -29,35 +25,7 @@ namespace WinformTutorials
             }
         }
 
-        private static void InitDefaultDir()
-        {
-            if(string.IsNullOrWhiteSpace(_defaultDir))
-            {
-                _defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                _defaultDir += @"\Album";
-            }
-
-            Directory.CreateDirectory(_defaultDir);
-        }
-
-        public static string DefaultDir
-        {
-            get
-            {
-                if (_initializeDir)
-                {
-                    InitDefaultDir();
-                    _initializeDir = false;
-                }
-                return _defaultDir;
-            }
-
-            set
-            {
-                _defaultDir = value;
-                _initializeDir = true;
-            }
-        }
+   
 
         public MyPhotos()
         {
@@ -72,40 +40,30 @@ namespace WinformTutorials
 
         private void menuOpen_Click(object sender, EventArgs e)
         {
+            if(_bAlbumChanged && !string.IsNullOrWhiteSpace(_album.FileName))
+            {
+                menuSave_Click(sender,e);
+            }
+
             var dlg = new OpenFileDialog
                           {
-                              Title = "Load Photo",
-                              Filter = "jpg files (*.jpg)"
-                                       + "|*.jpg|All files (*.*)|*.*"
+                              Title = "Open Album",
+                              Filter = "Album files (*.abm)|*.abm|" +
+                                       "All files (*.*)|*.*",
+                                       InitialDirectory = PhotoAlbum.DefaultDir,
+                                       RestoreDirectory = true
+                                       
                           };
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                try
-                {
-                    updateStatus("Loading " + dlg.FileName);
-                    pbxPhoto.Image = new Bitmap(dlg.OpenFile());
-                    statusImageSize.Text = string.Format("[{0}x{1}]", pbxPhoto.Image.Width, pbxPhoto.Image.Height);
-
-                    int percent = 100;
-                    if (pbxPhoto.SizeMode != PictureBoxSizeMode.StretchImage)
-                    {
-                        var rect = pbxPhoto.ClientRectangle;
-                        int imgWidth = pbxPhoto.Image.Width;
-                        int imgHeight = pbxPhoto.Image.Height;
-                        percent = 100*Math.Min(rect.Width, imgWidth)*Math.Min(rect.Height, imgHeight)/
-                                  (imgWidth*imgHeight);
-                    }
-                    statusZoomFactor.Text = string.Format("{0}%", percent);
-                    updateStatus("Loaded " + dlg.FileName);
-                }
-                catch (Exception ex)
-                {
-                    updateStatus("Unable to Load " + dlg.FileName);
-                    MessageBox.Show("Unable to load file: " + ex.Message);
-                }
+                _album.Open(dlg.FileName);
+                _album.FileName = dlg.FileName;
+                _bAlbumChanged = false;
+                Invalidate();
             }
             dlg.Dispose();
         }
+
 
         private void updateStatus(string message)
         {
@@ -234,7 +192,7 @@ namespace WinformTutorials
                               Title = "Save Album",
                               DefaultExt = "abm",
                               Filter = "Album files (*.abm)|*.abm|" + "All files|*.*",
-                              InitialDirectory = DefaultDir,
+                              InitialDirectory = PhotoAlbum.DefaultDir,
                               RestoreDirectory = true
 
                           };

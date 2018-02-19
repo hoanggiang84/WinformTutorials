@@ -76,6 +76,9 @@ namespace TUTORIALS.Library
         }
 
         private bool _disposing;
+        private static string _defaultDir;
+        private static bool _initializeDir;
+
         public void Dispose()
         {
             if(!_disposing)
@@ -129,7 +132,7 @@ namespace TUTORIALS.Library
             var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
             var sr = new StreamReader(fs);
             int version;
-            if (!int.TryParse(sr.ReadLine(), out version))
+            if (!Int32.TryParse(sr.ReadLine(), out version))
                 version = 0;
 
             try
@@ -141,7 +144,7 @@ namespace TUTORIALS.Library
                         do
                         {
                             name = sr.ReadLine();
-                            if (!string.IsNullOrWhiteSpace(name))
+                            if (!String.IsNullOrWhiteSpace(name))
                                 Add(new Photograph(name));
                         } while (name!=null);
                         break;
@@ -153,6 +156,36 @@ namespace TUTORIALS.Library
             {
                 sr.Close();
                 fs.Close();
+            }
+        }
+
+        private static void InitDefaultDir()
+        {
+            if (String.IsNullOrWhiteSpace(_defaultDir))
+            {
+                _defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                _defaultDir += @"\Album";
+            }
+
+            Directory.CreateDirectory(_defaultDir);
+        }
+
+        public static string DefaultDir
+        {
+            get
+            {
+                if (_initializeDir)
+                {
+                    InitDefaultDir();
+                    _initializeDir = false;
+                }
+                return _defaultDir;
+            }
+
+            set
+            {
+                _defaultDir = value;
+                _initializeDir = true;
             }
         }
     }
