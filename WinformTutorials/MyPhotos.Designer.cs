@@ -255,21 +255,21 @@
             // contextStretch
             // 
             this.contextStretch.Name = "contextStretch";
-            this.contextStretch.Size = new System.Drawing.Size(141, 22);
+            this.contextStretch.Size = new System.Drawing.Size(152, 22);
             this.contextStretch.Text = "Stretch to Fit";
             this.contextStretch.Click += new System.EventHandler(this.menuStretch_Click);
             // 
             // contextActual
             // 
             this.contextActual.Name = "contextActual";
-            this.contextActual.Size = new System.Drawing.Size(141, 22);
+            this.contextActual.Size = new System.Drawing.Size(152, 22);
             this.contextActual.Text = "Actual Size";
             this.contextActual.Click += new System.EventHandler(this.menuActualSize_Click);
             // 
             // contextScale
             // 
             this.contextScale.Name = "contextScale";
-            this.contextScale.Size = new System.Drawing.Size(141, 22);
+            this.contextScale.Size = new System.Drawing.Size(152, 22);
             this.contextScale.Text = "Scale to Fit";
             this.contextScale.Click += new System.EventHandler(this.menuScaleToFit_Click);
             // 

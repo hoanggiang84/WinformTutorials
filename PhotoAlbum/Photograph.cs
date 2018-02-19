@@ -1,17 +1,30 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 
 namespace TUTORIALS.Library
 {
     public class Photograph:IDisposable
     {
-        private string _fileName;
+        private readonly string _fileName;
+        private string _caption;
         private Bitmap _bitmap;
+
 
         public Photograph(string fileName)
         {
             _fileName = fileName;
             _bitmap = InvalidPhotoImage;
+            _caption = Path.GetFileNameWithoutExtension(_fileName);
+        }
+
+        public string Caption
+        {
+            get { return _caption; }
+            set
+            {
+                _caption = string.IsNullOrWhiteSpace(value) ? Path.GetFileNameWithoutExtension(_fileName) : value;
+            }
         }
 
         public string FileName { get { return _fileName; } }

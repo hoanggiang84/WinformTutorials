@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CaptionDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CaptionDlg.Designer.cs">
+      <DependentUpon>CaptionDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyPhotos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -52,6 +58,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CaptionDlg.resx">
+      <DependentUpon>CaptionDlg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MyPhotos.resx">
       <DependentUpon>MyPhotos.cs</DependentUpon>
     </EmbeddedResource>

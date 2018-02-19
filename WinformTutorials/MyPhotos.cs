@@ -151,7 +151,7 @@ namespace WinformTutorials
             if(_album.Count>0)
             {
                 var photo = _album.CurrentPhoto;
-                updateStatus(photo.FileName);
+                updateStatus(photo.Caption);
                 statusImageSize.Text = string.Format("{0:#} x {1:#}", photo.Image.Width, photo.Image.Height);
                 statusFileIndex.Text = string.Format("{0}/{1}", _album.CurrentPosition + 1, _album.Count);
             }
@@ -315,6 +315,12 @@ namespace WinformTutorials
 
             _album = new PhotoAlbum();
             SetTitleBar();
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = !closeCurrentAlbum();
+            base.OnClosing(e);
         }
     }
 }

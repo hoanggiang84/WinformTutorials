@@ -125,7 +125,8 @@ namespace TUTORIALS.Library
             return List.Add(p);
         }
 
-        private const int _CurrentVersion = 66;
+        //private const int _CurrentVersion = 66;
+        private const int _CurrentVersion = 83;
         public void Save(string fileName)
         {
             var fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite);
@@ -136,6 +137,7 @@ namespace TUTORIALS.Library
                 foreach (Photograph photo in this)
                 {
                     sw.WriteLine(photo.FileName);
+                    sw.WriteLine(photo.Caption);
                 }
                 ResetAlbumChanged();
             }
@@ -165,12 +167,18 @@ namespace TUTORIALS.Library
                 switch (version)
                 {
                     case 66:
+                    case 83:
                         string name;
                         do
                         {
                             name = sr.ReadLine();
                             if (!String.IsNullOrWhiteSpace(name))
-                                Add(new Photograph(name));
+                            {
+                                var p = new Photograph(name);
+                                if (version == 83)
+                                    p.Caption = sr.ReadLine();
+                                Add(p);
+                            }
                         } while (name!=null);
                         break;
                     default:
