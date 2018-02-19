@@ -8,11 +8,8 @@ namespace WinformTutorials
 {
     public partial class MyPhotos : Form
     {
-        protected PhotoAlbum _album;
-        protected bool _bAlbumChanged;
-
+        protected PhotoAlbum _album = new PhotoAlbum();
         private DisplayMode _selectedMode = DisplayMode.ScaleToFit;
-        
      
         private void SetTitleBar()
         {
@@ -42,30 +39,37 @@ namespace WinformTutorials
 
         private void menuOpen_Click(object sender, EventArgs e)
         {
-            if(_bAlbumChanged && !string.IsNullOrWhiteSpace(_album.FileName))
-            {
-                menuSave_Click(sender,e);
-            }
+            if(!closeCurrentAlbum())
+                return;
 
-            var dlg = new OpenFileDialog
+            using( var dlg = new OpenFileDialog
                           {
                               Title = "Open Album",
                               Filter = "Album files (*.abm)|*.abm|" +
                                        "All files (*.*)|*.*",
                                        InitialDirectory = PhotoAlbum.DefaultDir,
                                        RestoreDirectory = true
-                                       
-                          };
-            if (dlg.ShowDialog() == DialogResult.OK)
+                          })
+            try
             {
+                if(dlg.ShowDialog() != DialogResult.OK)
+                    return;
                 _album.Open(dlg.FileName);
                 _album.FileName = dlg.FileName;
-                _bAlbumChanged = false;
+                _album.ResetAlbumChanged();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, string.Format("Unable to open file {0}\n" +
+                                                    "Error: {1}", dlg.FileName, ex.Message),
+                    "Open Album Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
                 Invalidate();
             }
-            dlg.Dispose();
         }
-
 
         private void updateStatus(string message)
         {
@@ -77,9 +81,10 @@ namespace WinformTutorials
             setPhotoDisplayMode(DisplayMode.StretchToFit);
         }
 
-        private void setPhotoDisplayMode(DisplayMode mode)
+        private void setPhotoDisplayMode(DisplayMode displayMode)
         {
-            _selectedMode = mode;
+            _selectedMode = displayMode;
+            panelImage.Invalidate();
             Invalidate();
         }
 
@@ -95,37 +100,34 @@ namespace WinformTutorials
 
         private void menuAdd_Click(object sender, EventArgs e)
         {
-            var dlg = new OpenFileDialog
-                          {
-                              Title = "Add Photos",
-                              Multiselect = true,
-                              Filter = "Image Files (JPEG, GIF, BMP, etc.)|" +
-                                       "*.jpg;*.jpeg;*.gif;*.bmp;*.tif;*.tiff;*.png|" +
-                                       "JPEG files (*.jpg;*.jpeg)|*.jpg;*.jpeg |" +
-                                       "GIF files  (*.gif)|*.gif |" +
-                                       "BMP files  (*.bmp)|*.bmp |" +
-                                       "TIFF files  (*.tif;*.tiff)|*.tif;*.tiff |" +
-                                       "PNG files  (*.png)|*.png |" +
-                                       "All files  (*.*)|*.*",
-                              InitialDirectory = @"D:\CurrentWork\Tmp"
-                          };
-
-            if(dlg.ShowDialog() == DialogResult.OK)
+            using (var dlg = new OpenFileDialog
             {
-                var files = dlg.FileNames;
-                updateStatus(string.Format("Loading {0} Files", files.Length));
-                foreach (var file in files)
+                Title = "Add Photos",
+                Multiselect = true,
+                Filter = "Image Files (JPEG, GIF, BMP, etc.)|" +
+                         "*.jpg;*.jpeg;*.gif;*.bmp;*.tif;*.tiff;*.png|" +
+                         "JPEG files (*.jpg;*.jpeg)|*.jpg;*.jpeg |" +
+                         "GIF files  (*.gif)|*.gif |" +
+                         "BMP files  (*.bmp)|*.bmp |" +
+                         "TIFF files  (*.tif;*.tiff)|*.tif;*.tiff |" +
+                         "PNG files  (*.png)|*.png |" +
+                         "All files  (*.*)|*.*",
+                InitialDirectory = @"D:\CurrentWork\Tmp"
+            })
+            {
+                if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    var photo = new Photograph(file);
-                    if(_album.IndexOf(photo) < 0)
+                    var files = dlg.FileNames;
+                    updateStatus(string.Format("Loading {0} Files", files.Length));
+                    foreach (var file in files)
                     {
-                        _album.Add(photo);
-                        _bAlbumChanged = true;
+                        var photo = new Photograph(file);
+                        if (_album.IndexOf(photo) < 0)
+                            _album.Add(photo);
                     }
-                }
 
-                dlg.Dispose();
-                Invalidate();
+                    Invalidate();
+                }
             }
         }
 
@@ -133,48 +135,35 @@ namespace WinformTutorials
         {
             if(_album.Count>0)
             {
-                _album.RemoveAt(_album.CurrentPosition);
-                _bAlbumChanged = true;
+                var dlgAns = MessageBox.Show(this,
+                                             string.Format("Are you sure want to remove {0} from current album?",
+                                                           _album.CurrentPhoto.FileName), "Remove Current Photo",
+                                             MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                                             MessageBoxDefaultButton.Button2);
+                if(dlgAns == DialogResult.Yes)
+                    _album.RemoveAt(_album.CurrentPosition);
             }
             Invalidate();
         }
 
-        private const int X_OFFSET = 10;
-        private const int Y_OFFSET = 5;
         protected override void OnPaint(PaintEventArgs e)
         {
             if(_album.Count>0)
             {
                 var photo = _album.CurrentPhoto;
-                var g = e.Graphics;
-                var drawRect = new Rectangle(X_OFFSET, menuStripMainMenu.Height + Y_OFFSET,
-                    DisplayRectangle.Width, DisplayRectangle.Height - statusStrip.Height - 35);
-                switch (_selectedMode)
-                {
-                    case DisplayMode.StretchToFit:
-                        g.DrawImage(photo.Image, drawRect);
-                        break;
-                    case DisplayMode.ActualSize:
-                        g.DrawImage(photo.Image, new Rectangle(X_OFFSET, menuStripMainMenu.Height + Y_OFFSET, photo.Image.Width, photo.Image.Height));
-                        break;
-                    default:
-                        g.DrawImage(photo.Image, photo.ScaleToFit(drawRect));
-                        break;
-                }
-
                 updateStatus(photo.FileName);
                 statusImageSize.Text = string.Format("{0:#} x {1:#}", photo.Image.Width, photo.Image.Height);
                 statusFileIndex.Text = string.Format("{0}/{1}", _album.CurrentPosition + 1, _album.Count);
             }
             else
             {
-                e.Graphics.Clear(SystemColors.Control);
                 updateStatus("No Photos in Album");
                 statusImageSize.Text = string.Empty;
                 statusFileIndex.Text = string.Empty;
             }
 
             statusStrip.Invalidate();
+            panelImage.Invalidate();
             base.OnPaint(e);
         }
 
@@ -196,41 +185,55 @@ namespace WinformTutorials
 
         private void menuNew_Click(object sender, EventArgs e)
         {
-            if(_album != null)
-                _album.Dispose();
-            _album = new PhotoAlbum();
-            SetTitleBar();
-            Invalidate();
+            if (closeCurrentAlbum())
+            {
+                createNewAlbum();
+                Invalidate();
+            }
         }
 
         private void menuSaveAs_Click(object sender, EventArgs e)
         {
-            var dlg = new SaveFileDialog
-                          {
-                              Title = "Save Album",
-                              DefaultExt = "abm",
-                              Filter = "Album files (*.abm)|*.abm|" + "All files|*.*",
-                              InitialDirectory = PhotoAlbum.DefaultDir,
-                              RestoreDirectory = true
+            using (var dlg = new SaveFileDialog
+                              {
+                                  Title = "Save Album",
+                                  DefaultExt = "abm",
+                                  Filter = "Album files (*.abm)|*.abm|" + "All files|*.*",
+                                  InitialDirectory = PhotoAlbum.DefaultDir,
+                                  RestoreDirectory = true
 
-                          };
-            if(dlg.ShowDialog()==DialogResult.OK)
+                              })
             {
-                _album.FileName = dlg.FileName;
-                menuSave_Click(sender, e);
-                SetTitleBar();
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    _album.FileName = dlg.FileName;
+                    menuSave_Click(sender, e);
+                    SetTitleBar();
+                }
             }
-            dlg.Dispose();
         }
 
         private void menuSave_Click(object sender, EventArgs e)
         {
             if(string.IsNullOrWhiteSpace(_album.FileName))
+            {
                 menuSaveAs_Click(sender,e);
+            }
             else
             {
-                _album.Save();
-                _bAlbumChanged = false;
+                try
+                {
+                    _album.Save();
+                }
+                catch (Exception ex)
+                {
+                    var msg = string.Format("Unable to save file {0} - {1}" +
+                                            "\nWould you like to save the album in an alternate file?", _album.FileName, ex.Message);
+                    var dlgAns = MessageBox.Show(this, msg, "Save Album Error", MessageBoxButtons.YesNo,
+                                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button2);
+                    if(dlgAns == DialogResult.Yes)
+                        menuSaveAs_Click(sender, e);
+                }
             }
         }
 
@@ -244,6 +247,74 @@ namespace WinformTutorials
         private void MyPhotos_Resize(object sender, EventArgs e)
         {
             Invalidate();
+        }
+
+        private void panelImage_Paint(object sender, PaintEventArgs e)
+        {
+            if(_album.Count>0)
+            {
+                var photo = _album.CurrentPhoto;
+                var g = e.Graphics;
+                switch (_selectedMode)
+                {
+                    case DisplayMode.ScaleToFit:
+                        panelImage.AutoScroll = false;
+                        g.DrawImage(photo.Image, photo.ScaleToFit(panelImage.DisplayRectangle));
+                        break;
+                    case DisplayMode.StretchToFit:
+                        panelImage.AutoScroll = false;
+                        g.DrawImage(photo.Image, panelImage.DisplayRectangle);
+                        break;
+                    case DisplayMode.ActualSize:
+                        panelImage.AutoScroll = true;
+                        g.DrawImage(photo.Image,
+                            panelImage.AutoScrollPosition.X,
+                            panelImage.AutoScrollPosition.Y,
+                            photo.Image.Width,
+                            photo.Image.Height);
+                        panelImage.AutoScrollMinSize = photo.Image.Size;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                panelImage.ContextMenuStrip = contextMenuView;
+            }
+            else
+            {
+                e.Graphics.Clear(SystemColors.Control);
+                panelImage.ContextMenuStrip = null;
+            }
+        }
+
+        private bool closeCurrentAlbum()
+        {
+            if(_album.IsChanged)
+            {
+                string msg = string.IsNullOrWhiteSpace(_album.FileName) ? "Do you want to save the current album?" 
+                                 : string.Format("Do you want to save your changes to {0}", _album.FileName);
+
+                var dlgAns = MessageBox.Show(this, msg, "Save Current Album?", MessageBoxButtons.YesNoCancel,
+                                             MessageBoxIcon.Question);
+                switch (dlgAns)
+                {
+                    case DialogResult.Yes:
+                        menuSave_Click(this, EventArgs.Empty);
+                        break;
+                    case DialogResult.Cancel:
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void createNewAlbum()
+        {
+            if (_album != null)
+                _album.Dispose();
+
+            _album = new PhotoAlbum();
+            SetTitleBar();
         }
     }
 }

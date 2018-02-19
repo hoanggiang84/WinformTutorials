@@ -6,6 +6,7 @@ namespace TUTORIALS.Library
 {
     public class PhotoAlbum : CollectionBase, IDisposable
     {
+        public bool IsChanged { get; private set; }
         private int _currentPos;
         public int CurrentPosition
         {
@@ -28,12 +29,31 @@ namespace TUTORIALS.Library
         }
 
         private string _fileName;
-        public string FileName { get { return _fileName; } set { _fileName = value; } }
+        public string FileName
+        {
+            get { return _fileName; }
+            set
+            {
+                _fileName = value;
+                SetAlbumChanged();
+            }
+        }
+
+        public void ResetAlbumChanged()
+        {
+            IsChanged = false;
+        }
+
+        private void SetAlbumChanged()
+        {
+            IsChanged = true;
+        }
 
         protected override void OnClear()
         {
             _currentPos = 0;
             _fileName = null;
+            SetAlbumChanged();
             Dispose();
             base.OnClear();
 
@@ -42,8 +62,10 @@ namespace TUTORIALS.Library
         protected override void OnRemoveComplete(int index, object value)
         {
             CurrentPosition = _currentPos;
+            SetAlbumChanged();
             base.OnRemoveComplete(index, value);
         }
+
         public Photograph CurrentPhoto
         {
             get
@@ -99,6 +121,7 @@ namespace TUTORIALS.Library
 
         public virtual int Add(Photograph p)
         {
+            SetAlbumChanged();
             return List.Add(p);
         }
 
@@ -114,9 +137,11 @@ namespace TUTORIALS.Library
                 {
                     sw.WriteLine(photo.FileName);
                 }
+                ResetAlbumChanged();
             }
             finally
             {
+
                 sw.Close();
                 fs.Close();
             }
@@ -151,6 +176,7 @@ namespace TUTORIALS.Library
                     default:
                         throw new IOException("Unrecognized album file format");
                 }
+                ResetAlbumChanged();
             }
             finally
             {

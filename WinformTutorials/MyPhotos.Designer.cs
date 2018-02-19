@@ -62,6 +62,7 @@
             this.statusImageSize = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusFileIndex = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusZoomFactor = new System.Windows.Forms.ToolStripStatusLabel();
+            this.panelImage = new System.Windows.Forms.Panel();
             this.menuStripMainMenu.SuspendLayout();
             this.contextMenuView.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -190,21 +191,21 @@
             // menuStretch
             // 
             this.menuStretch.Name = "menuStretch";
-            this.menuStretch.Size = new System.Drawing.Size(152, 22);
+            this.menuStretch.Size = new System.Drawing.Size(141, 22);
             this.menuStretch.Text = "S&tretch to Fit";
             this.menuStretch.Click += new System.EventHandler(this.menuStretch_Click);
             // 
             // menuActualSize
             // 
             this.menuActualSize.Name = "menuActualSize";
-            this.menuActualSize.Size = new System.Drawing.Size(152, 22);
+            this.menuActualSize.Size = new System.Drawing.Size(141, 22);
             this.menuActualSize.Text = "&Actual Size";
             this.menuActualSize.Click += new System.EventHandler(this.menuActualSize_Click);
             // 
             // menuScaleToFit
             // 
             this.menuScaleToFit.Name = "menuScaleToFit";
-            this.menuScaleToFit.Size = new System.Drawing.Size(152, 22);
+            this.menuScaleToFit.Size = new System.Drawing.Size(141, 22);
             this.menuScaleToFit.Text = "S&cale to Fit";
             this.menuScaleToFit.Click += new System.EventHandler(this.menuScaleToFit_Click);
             // 
@@ -239,7 +240,7 @@
             this.contextNext,
             this.contextPrevious});
             this.contextMenuView.Name = "contextMenuView";
-            this.contextMenuView.Size = new System.Drawing.Size(153, 98);
+            this.contextMenuView.Size = new System.Drawing.Size(120, 76);
             // 
             // contextImage
             // 
@@ -248,27 +249,27 @@
             this.contextActual,
             this.contextScale});
             this.contextImage.Name = "contextImage";
-            this.contextImage.Size = new System.Drawing.Size(152, 22);
+            this.contextImage.Size = new System.Drawing.Size(119, 22);
             this.contextImage.Text = "&Image";
             // 
             // contextStretch
             // 
             this.contextStretch.Name = "contextStretch";
-            this.contextStretch.Size = new System.Drawing.Size(152, 22);
+            this.contextStretch.Size = new System.Drawing.Size(141, 22);
             this.contextStretch.Text = "Stretch to Fit";
             this.contextStretch.Click += new System.EventHandler(this.menuStretch_Click);
             // 
             // contextActual
             // 
             this.contextActual.Name = "contextActual";
-            this.contextActual.Size = new System.Drawing.Size(152, 22);
+            this.contextActual.Size = new System.Drawing.Size(141, 22);
             this.contextActual.Text = "Actual Size";
             this.contextActual.Click += new System.EventHandler(this.menuActualSize_Click);
             // 
             // contextScale
             // 
             this.contextScale.Name = "contextScale";
-            this.contextScale.Size = new System.Drawing.Size(152, 22);
+            this.contextScale.Size = new System.Drawing.Size(141, 22);
             this.contextScale.Text = "Scale to Fit";
             this.contextScale.Click += new System.EventHandler(this.menuScaleToFit_Click);
             // 
@@ -329,11 +330,22 @@
             this.statusZoomFactor.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.statusZoomFactor.Size = new System.Drawing.Size(10, 17);
             // 
+            // panelImage
+            // 
+            this.panelImage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panelImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelImage.Location = new System.Drawing.Point(0, 24);
+            this.panelImage.Name = "panelImage";
+            this.panelImage.Size = new System.Drawing.Size(396, 307);
+            this.panelImage.TabIndex = 3;
+            this.panelImage.Paint += new System.Windows.Forms.PaintEventHandler(this.panelImage_Paint);
+            // 
             // MyPhotos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(396, 353);
+            this.Controls.Add(this.panelImage);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStripMainMenu);
             this.MainMenuStrip = this.menuStripMainMenu;
@@ -385,6 +397,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem contextNext;
         private System.Windows.Forms.ToolStripMenuItem contextPrevious;
+        private System.Windows.Forms.Panel panelImage;
 
 
     }
