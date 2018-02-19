@@ -11,6 +11,9 @@ namespace WinformTutorials
         protected PhotoAlbum _album;
         protected bool _bAlbumChanged;
 
+        private DisplayMode _selectedMode = DisplayMode.ScaleToFit;
+        
+     
         private void SetTitleBar()
         {
             var ver = new Version(Application.ProductVersion);
@@ -24,8 +27,7 @@ namespace WinformTutorials
                 Text = string.Format("{0} - MyPhotos {1:#}.{2:#}", baseFile, ver.Major, ver.Minor);
             }
         }
-
-   
+           
 
         public MyPhotos()
         {
@@ -72,23 +74,23 @@ namespace WinformTutorials
 
         private void menuStretch_Click(object sender, EventArgs e)
         {
-            setPhotoSizeMode(PictureBoxSizeMode.StretchImage);
+            setPhotoDisplayMode(DisplayMode.StretchToFit);
         }
 
-        private void setPhotoSizeMode(PictureBoxSizeMode mode)
+        private void setPhotoDisplayMode(DisplayMode mode)
         {
-            pbxPhoto.SizeMode = mode;
-            pbxPhoto.Invalidate();
+            _selectedMode = mode;
+            Invalidate();
         }
 
         private void menuActualSize_Click(object sender, EventArgs e)
         {
-            setPhotoSizeMode(PictureBoxSizeMode.Normal);
+            setPhotoDisplayMode(DisplayMode.ActualSize);
         }
 
-        private void menuCenter_Click(object sender, EventArgs e)
+        private void menuScaleToFit_Click(object sender, EventArgs e)
         {
-            setPhotoSizeMode(PictureBoxSizeMode.Normal);
+            setPhotoDisplayMode(DisplayMode.ScaleToFit);
         }
 
         private void menuAdd_Click(object sender, EventArgs e)
@@ -137,12 +139,28 @@ namespace WinformTutorials
             Invalidate();
         }
 
+        private const int X_OFFSET = 10;
+        private const int Y_OFFSET = 5;
         protected override void OnPaint(PaintEventArgs e)
         {
             if(_album.Count>0)
             {
                 var photo = _album.CurrentPhoto;
-                pbxPhoto.Image = photo.Image;
+                var g = e.Graphics;
+                var drawRect = new Rectangle(X_OFFSET, menuStripMainMenu.Height + Y_OFFSET,
+                    DisplayRectangle.Width, DisplayRectangle.Height - statusStrip.Height - 35);
+                switch (_selectedMode)
+                {
+                    case DisplayMode.StretchToFit:
+                        g.DrawImage(photo.Image, drawRect);
+                        break;
+                    case DisplayMode.ActualSize:
+                        g.DrawImage(photo.Image, new Rectangle(X_OFFSET, menuStripMainMenu.Height + Y_OFFSET, photo.Image.Width, photo.Image.Height));
+                        break;
+                    default:
+                        g.DrawImage(photo.Image, photo.ScaleToFit(drawRect));
+                        break;
+                }
 
                 updateStatus(photo.FileName);
                 statusImageSize.Text = string.Format("{0:#} x {1:#}", photo.Image.Width, photo.Image.Height);
@@ -150,7 +168,7 @@ namespace WinformTutorials
             }
             else
             {
-                pbxPhoto.Image = null;
+                e.Graphics.Clear(SystemColors.Control);
                 updateStatus("No Photos in Album");
                 statusImageSize.Text = string.Empty;
                 statusFileIndex.Text = string.Empty;
@@ -214,6 +232,18 @@ namespace WinformTutorials
                 _album.Save();
                 _bAlbumChanged = false;
             }
+        }
+
+        private enum DisplayMode
+        {
+            ScaleToFit = 0,
+            StretchToFit = 1,
+            ActualSize = 2
+        }
+
+        private void MyPhotos_Resize(object sender, EventArgs e)
+        {
+            Invalidate();
         }
     }
 }

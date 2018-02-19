@@ -45,26 +45,24 @@
             this.menuImage = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStretch = new System.Windows.Forms.ToolStripMenuItem();
             this.menuActualSize = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuCenter = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuScaleToFit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuNext = new System.Windows.Forms.ToolStripMenuItem();
             this.menuPrevious = new System.Windows.Forms.ToolStripMenuItem();
-            this.pbxPhoto = new System.Windows.Forms.PictureBox();
             this.contextMenuView = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.contextImage = new System.Windows.Forms.ToolStripMenuItem();
             this.contextStretch = new System.Windows.Forms.ToolStripMenuItem();
             this.contextActual = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextCenter = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextScale = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.contextNext = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextPrevious = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.labelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusImageSize = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusZoomFactor = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusFileIndex = new System.Windows.Forms.ToolStripStatusLabel();
-            this.contextNext = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextPrevious = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.statusZoomFactor = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStripMainMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxPhoto)).BeginInit();
             this.contextMenuView.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -99,7 +97,7 @@
             // 
             this.menuNew.Name = "menuNew";
             this.menuNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.menuNew.Size = new System.Drawing.Size(152, 22);
+            this.menuNew.Size = new System.Drawing.Size(146, 22);
             this.menuNew.Text = "&New";
             this.menuNew.Click += new System.EventHandler(this.menuNew_Click);
             // 
@@ -120,14 +118,14 @@
             // 
             this.menuSave.Name = "menuSave";
             this.menuSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.menuSave.Size = new System.Drawing.Size(152, 22);
+            this.menuSave.Size = new System.Drawing.Size(146, 22);
             this.menuSave.Text = "&Save";
             this.menuSave.Click += new System.EventHandler(this.menuSave_Click);
             // 
             // menuSaveAs
             // 
             this.menuSaveAs.Name = "menuSaveAs";
-            this.menuSaveAs.Size = new System.Drawing.Size(152, 22);
+            this.menuSaveAs.Size = new System.Drawing.Size(146, 22);
             this.menuSaveAs.Text = "Save &As";
             this.menuSaveAs.Click += new System.EventHandler(this.menuSaveAs_Click);
             // 
@@ -184,7 +182,7 @@
             this.menuImage.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuStretch,
             this.menuActualSize,
-            this.menuCenter});
+            this.menuScaleToFit});
             this.menuImage.Name = "menuImage";
             this.menuImage.Size = new System.Drawing.Size(192, 22);
             this.menuImage.Text = "&Image";
@@ -203,12 +201,12 @@
             this.menuActualSize.Text = "&Actual Size";
             this.menuActualSize.Click += new System.EventHandler(this.menuActualSize_Click);
             // 
-            // menuCenter
+            // menuScaleToFit
             // 
-            this.menuCenter.Name = "menuCenter";
-            this.menuCenter.Size = new System.Drawing.Size(152, 22);
-            this.menuCenter.Text = "&Center Image";
-            this.menuCenter.Click += new System.EventHandler(this.menuCenter_Click);
+            this.menuScaleToFit.Name = "menuScaleToFit";
+            this.menuScaleToFit.Size = new System.Drawing.Size(152, 22);
+            this.menuScaleToFit.Text = "S&cale to Fit";
+            this.menuScaleToFit.Click += new System.EventHandler(this.menuScaleToFit_Click);
             // 
             // toolStripSeparator3
             // 
@@ -233,18 +231,6 @@
             this.menuPrevious.Text = "&Previous";
             this.menuPrevious.Click += new System.EventHandler(this.menuPrevious_Click);
             // 
-            // pbxPhoto
-            // 
-            this.pbxPhoto.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbxPhoto.ContextMenuStrip = this.contextMenuView;
-            this.pbxPhoto.Location = new System.Drawing.Point(12, 27);
-            this.pbxPhoto.Name = "pbxPhoto";
-            this.pbxPhoto.Size = new System.Drawing.Size(372, 301);
-            this.pbxPhoto.TabIndex = 1;
-            this.pbxPhoto.TabStop = false;
-            // 
             // contextMenuView
             // 
             this.contextMenuView.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -253,14 +239,14 @@
             this.contextNext,
             this.contextPrevious});
             this.contextMenuView.Name = "contextMenuView";
-            this.contextMenuView.Size = new System.Drawing.Size(120, 76);
+            this.contextMenuView.Size = new System.Drawing.Size(153, 98);
             // 
             // contextImage
             // 
             this.contextImage.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.contextStretch,
             this.contextActual,
-            this.contextCenter});
+            this.contextScale});
             this.contextImage.Name = "contextImage";
             this.contextImage.Size = new System.Drawing.Size(152, 22);
             this.contextImage.Text = "&Image";
@@ -279,12 +265,31 @@
             this.contextActual.Text = "Actual Size";
             this.contextActual.Click += new System.EventHandler(this.menuActualSize_Click);
             // 
-            // contextCenter
+            // contextScale
             // 
-            this.contextCenter.Name = "contextCenter";
-            this.contextCenter.Size = new System.Drawing.Size(152, 22);
-            this.contextCenter.Text = "Center Image";
-            this.contextCenter.Click += new System.EventHandler(this.menuCenter_Click);
+            this.contextScale.Name = "contextScale";
+            this.contextScale.Size = new System.Drawing.Size(152, 22);
+            this.contextScale.Text = "Scale to Fit";
+            this.contextScale.Click += new System.EventHandler(this.menuScaleToFit_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(116, 6);
+            // 
+            // contextNext
+            // 
+            this.contextNext.Name = "contextNext";
+            this.contextNext.Size = new System.Drawing.Size(119, 22);
+            this.contextNext.Text = "&Next";
+            this.contextNext.Click += new System.EventHandler(this.menuNext_Click);
+            // 
+            // contextPrevious
+            // 
+            this.contextPrevious.Name = "contextPrevious";
+            this.contextPrevious.Size = new System.Drawing.Size(119, 22);
+            this.contextPrevious.Text = "&Previous";
+            this.contextPrevious.Click += new System.EventHandler(this.menuPrevious_Click);
             // 
             // statusStrip
             // 
@@ -312,36 +317,17 @@
             this.statusImageSize.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
             this.statusImageSize.Size = new System.Drawing.Size(10, 17);
             // 
-            // statusZoomFactor
-            // 
-            this.statusZoomFactor.Name = "statusZoomFactor";
-            this.statusZoomFactor.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.statusZoomFactor.Size = new System.Drawing.Size(10, 17);
-            // 
             // statusFileIndex
             // 
             this.statusFileIndex.Name = "statusFileIndex";
             this.statusFileIndex.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.statusFileIndex.Size = new System.Drawing.Size(10, 17);
             // 
-            // contextNext
+            // statusZoomFactor
             // 
-            this.contextNext.Name = "contextNext";
-            this.contextNext.Size = new System.Drawing.Size(152, 22);
-            this.contextNext.Text = "&Next";
-            this.contextNext.Click += new System.EventHandler(this.menuNext_Click);
-            // 
-            // contextPrevious
-            // 
-            this.contextPrevious.Name = "contextPrevious";
-            this.contextPrevious.Size = new System.Drawing.Size(152, 22);
-            this.contextPrevious.Text = "&Previous";
-            this.contextPrevious.Click += new System.EventHandler(this.menuPrevious_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
+            this.statusZoomFactor.Name = "statusZoomFactor";
+            this.statusZoomFactor.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.statusZoomFactor.Size = new System.Drawing.Size(10, 17);
             // 
             // MyPhotos
             // 
@@ -349,14 +335,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(396, 353);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.pbxPhoto);
             this.Controls.Add(this.menuStripMainMenu);
             this.MainMenuStrip = this.menuStripMainMenu;
             this.Name = "MyPhotos";
             this.Text = "My Photo";
+            this.Resize += new System.EventHandler(this.MyPhotos_Resize);
             this.menuStripMainMenu.ResumeLayout(false);
             this.menuStripMainMenu.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxPhoto)).EndInit();
             this.contextMenuView.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
@@ -375,13 +360,12 @@
         private System.Windows.Forms.ToolStripMenuItem menuImage;
         private System.Windows.Forms.ToolStripMenuItem menuStretch;
         private System.Windows.Forms.ToolStripMenuItem menuActualSize;
-        private System.Windows.Forms.PictureBox pbxPhoto;
-        private System.Windows.Forms.ToolStripMenuItem menuCenter;
+        private System.Windows.Forms.ToolStripMenuItem menuScaleToFit;
         private System.Windows.Forms.ContextMenuStrip contextMenuView;
         private System.Windows.Forms.ToolStripMenuItem contextImage;
         private System.Windows.Forms.ToolStripMenuItem contextStretch;
         private System.Windows.Forms.ToolStripMenuItem contextActual;
-        private System.Windows.Forms.ToolStripMenuItem contextCenter;
+        private System.Windows.Forms.ToolStripMenuItem contextScale;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel labelStatus;
         private System.Windows.Forms.ToolStripStatusLabel statusImageSize;

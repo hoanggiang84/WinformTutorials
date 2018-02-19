@@ -92,5 +92,28 @@ namespace TUTORIALS.Library
         {
             return FileName;
         }
+
+        public Rectangle ScaleToFit(Rectangle targetArea)
+        {
+            var resultRect = new Rectangle(targetArea.Location, targetArea.Size);
+
+            // Determine best fit: width or height
+            if (resultRect.Height * Image.Width > resultRect.Width * Image.Height)
+            {
+                // Final width should match target,
+                // determine and center height
+                resultRect.Height = resultRect.Width * Image.Height / Image.Width;
+                resultRect.Y += (targetArea.Height - resultRect.Height) / 2;
+            }
+            else
+            {
+                // Final height shoud match target,
+                // determine and center width
+                resultRect.Width = resultRect.Height * Image.Width / Image.Height;
+                resultRect.X += (targetArea.Width - resultRect.Width) / 2;
+            }
+            return resultRect;
+        }
+
     }
 }
