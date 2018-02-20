@@ -44,10 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CaptionDlg.cs">
+    <Compile Include="SideForms\CaptionDlg.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CaptionDlg.Designer.cs">
+    <Compile Include="SideForms\CaptionDlg.Designer.cs">
       <DependentUpon>CaptionDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="MyPhotos.cs">
@@ -56,13 +56,22 @@
     <Compile Include="MyPhotos.Designer.cs">
       <DependentUpon>MyPhotos.cs</DependentUpon>
     </Compile>
+    <Compile Include="SideForms\PixelDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SideForms\PixelDlg.Designer.cs">
+      <DependentUpon>PixelDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CaptionDlg.resx">
+    <EmbeddedResource Include="SideForms\CaptionDlg.resx">
       <DependentUpon>CaptionDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MyPhotos.resx">
       <DependentUpon>MyPhotos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SideForms\PixelDlg.resx">
+      <DependentUpon>PixelDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

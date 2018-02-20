@@ -16,5 +16,13 @@ namespace WinformTutorials
         {
             InitializeComponent();
         }
+
+        public string ImageLabel { set { textBoxImage.Text = value; } }
+
+        public string Caption
+        {
+            get { return textBoxCaption.Text; }
+            set { textBoxCaption.Text = value; }
+        }
     }
 }

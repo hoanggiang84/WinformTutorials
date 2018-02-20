@@ -49,6 +49,12 @@ namespace TUTORIALS.Library
             IsChanged = true;
         }
 
+        public void SetCaptionCurrentPhoto(string caption)
+        {
+            CurrentPhoto.Caption = caption;
+            SetAlbumChanged();
+        }
+
         protected override void OnClear()
         {
             _currentPos = 0;
@@ -56,7 +62,6 @@ namespace TUTORIALS.Library
             SetAlbumChanged();
             Dispose();
             base.OnClear();
-
         }
 
         protected override void OnRemoveComplete(int index, object value)

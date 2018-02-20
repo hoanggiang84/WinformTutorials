@@ -10,6 +10,8 @@ namespace WinformTutorials
     {
         protected PhotoAlbum _album = new PhotoAlbum();
         private DisplayMode _selectedMode = DisplayMode.ScaleToFit;
+        private PixelDlg _dlgPixel = new PixelDlg();
+        private int _nPixelDlgIndex;
      
         private void SetTitleBar()
         {
@@ -251,6 +253,13 @@ namespace WinformTutorials
 
         private void panelImage_Paint(object sender, PaintEventArgs e)
         {
+            if(_dlgPixel!= null && _nPixelDlgIndex != _album.CurrentPosition)
+            {
+                _nPixelDlgIndex = _album.CurrentPosition;
+                var p = panelImage.PointToClient(MousePosition);
+                UpdatePixelData(p.X, p.Y);
+            }
+
             if(_album.Count>0)
             {
                 var photo = _album.CurrentPhoto;
@@ -321,6 +330,100 @@ namespace WinformTutorials
         {
             e.Cancel = !closeCurrentAlbum();
             base.OnClosing(e);
+        }
+
+        private void menuEdit_DropDownOpening(object sender, EventArgs e)
+        {
+            menuCaption.Enabled = (_album.Count > 0);
+        }
+
+        private void menuCaption_Click(object sender, EventArgs e)
+        {
+            var photo = _album.CurrentPhoto;
+            using (var dlg = new CaptionDlg())
+            {
+                dlg.ImageLabel = photo.FileName;
+                dlg.Caption = photo.Caption;
+                if(dlg.ShowDialog()==DialogResult.OK)
+                    _album.SetCaptionCurrentPhoto(dlg.Caption);
+                updateStatus(_album.CurrentPhoto.Caption);
+            }
+        }
+
+        private void menuPixel_Click(object sender, EventArgs e)
+        {
+            if(_dlgPixel == null || _dlgPixel.IsDisposed)
+                _dlgPixel = new PixelDlg {Owner = this};
+
+            _nPixelDlgIndex = _album.CurrentPosition;
+            var p = panelImage.PointToClient(MousePosition);
+            UpdatePixelData(p.X, p.Y);
+            _dlgPixel.Show();
+
+        }
+
+        private void UpdatePixelData(int x, int y)
+        {
+            if(_dlgPixel == null || !_dlgPixel.Visible)
+                return;
+
+            var photo = _album.CurrentPhoto;
+            _dlgPixel.Text = photo.Caption;
+
+            var rect = panelImage.ClientRectangle;
+            if(photo == null || !rect.Contains(x,y))
+            {
+                _dlgPixel.Text = (photo == null) ? " " : photo.Caption;
+                _dlgPixel.XVal = 0;
+                _dlgPixel.YVal = 0;
+                _dlgPixel.RedVal = 0;
+                _dlgPixel.GreenVal = 0;
+                _dlgPixel.BlueVal = 0;
+                _dlgPixel.Update();
+                Cursor = Cursors.Default;
+                return;
+            }
+
+            int xp, yp;
+            var bmp = photo.Image;
+            switch (_selectedMode)
+            {
+                case DisplayMode.StretchToFit:
+                    xp = x*bmp.Width/rect.Width;
+                    yp = y*bmp.Height/rect.Height;
+                    break;
+                case DisplayMode.ScaleToFit:
+                    var rect2 = photo.ScaleToFit(rect);
+                    if(!rect2.Contains(x,y))
+                        return;
+
+                    xp = (x - rect2.Left)*bmp.Width/rect2.Width;
+                    yp = (y - rect2.Top)*bmp.Height/rect2.Height;
+                    break;
+                case DisplayMode.ActualSize:
+                    var rect3 = new Rectangle(rect.X, rect.Y, photo.Image.Width, photo.Image.Height);
+                    if(!rect3.Contains(x,y))
+                        return;
+                    xp = x;
+                    yp = y;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            var c = bmp.GetPixel(xp, yp);
+            _dlgPixel.XVal = xp;
+            _dlgPixel.YVal = yp;
+            _dlgPixel.RedVal = c.R;
+            _dlgPixel.GreenVal = c.G;
+            _dlgPixel.BlueVal = c.B;
+            _dlgPixel.Update();
+            _dlgPixel.Focus();
+        }
+
+        private void panelImage_MouseMove(object sender, MouseEventArgs e)
+        {
+            UpdatePixelData(e.X, e.Y);
         }
     }
 }
