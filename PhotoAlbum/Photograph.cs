@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 
@@ -8,6 +9,9 @@ namespace TUTORIALS.Library
     {
         private readonly string _fileName;
         private string _caption;
+        private string _photographer;
+        private string _notes;
+        private DateTime _dateTaken;
         private Bitmap _bitmap;
 
 
@@ -16,7 +20,16 @@ namespace TUTORIALS.Library
             _fileName = fileName;
             _bitmap = InvalidPhotoImage;
             _caption = Path.GetFileNameWithoutExtension(_fileName);
+            _dateTaken = DateTime.Now;
+            _photographer = "unknown";
+            _notes = "no notes provided";
         }
+
+        public string Photographer { get { return _photographer; } set { _photographer = value; } }
+
+        public string Notes { get { return _notes; } set { _notes = value; } }
+
+        public DateTime DateTaken { get { return _dateTaken; } set { _dateTaken = value; } }
 
         public string Caption
         {
@@ -128,5 +141,47 @@ namespace TUTORIALS.Library
             return resultRect;
         }
 
+        public void Write(StreamWriter sw)
+        {
+            sw.WriteLine(FileName);
+            sw.WriteLine(Caption);
+            sw.WriteLine(DateTaken.Ticks);
+            sw.WriteLine(Photographer);
+
+            sw.WriteLine(Notes.Length);
+            sw.Write(Notes.ToCharArray());
+            sw.WriteLine();
+        }
+
+        public static Photograph ReadVersion66(StreamReader sr)
+        {
+            var name = sr.ReadLine();
+            return (name == null) ? null : new Photograph(name);
+        }
+
+        public static Photograph ReadVersion83(StreamReader sr)
+        {
+            var name = sr.ReadLine();
+            return (name == null) ? null : new Photograph(name) {Caption = sr.ReadLine()};
+        }
+
+        public static Photograph ReadVersion92(StreamReader sr)
+        {
+            var p = ReadVersion83(sr);
+            if (p == null)
+                return null;
+
+            long ticks = long.Parse(sr.ReadLine());
+            p.DateTaken = new DateTime(ticks);
+            p.Photographer = sr.ReadLine();
+            int noteLen = int.Parse(sr.ReadLine());
+            var notesArray = new char[noteLen];
+            sr.Read(notesArray, 0, noteLen);
+            p.Notes = new string(notesArray);
+            sr.ReadLine();
+            return p;
+        }
+
+        public delegate Photograph ReadDelegate(StreamReader sr);
     }
 }

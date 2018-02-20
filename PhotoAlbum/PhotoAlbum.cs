@@ -6,6 +6,17 @@ namespace TUTORIALS.Library
 {
     public class PhotoAlbum : CollectionBase, IDisposable
     {
+        private string _title;
+        private string _password;
+        private DisplayValEnum _displayOption = DisplayValEnum.Caption;
+
+        public enum DisplayValEnum
+        {
+            FileName, Caption, Date
+        }
+
+
+
         public bool IsChanged { get; private set; }
         private int _currentPos;
         public int CurrentPosition
@@ -44,21 +55,18 @@ namespace TUTORIALS.Library
             IsChanged = false;
         }
 
-        private void SetAlbumChanged()
+        public void SetAlbumChanged()
         {
             IsChanged = true;
-        }
-
-        public void SetCaptionCurrentPhoto(string caption)
-        {
-            CurrentPhoto.Caption = caption;
-            SetAlbumChanged();
         }
 
         protected override void OnClear()
         {
             _currentPos = 0;
             _fileName = null;
+            _title = null;
+            _password = null;
+            _displayOption = DisplayValEnum.Caption;
             SetAlbumChanged();
             Dispose();
             base.OnClear();
@@ -130,8 +138,10 @@ namespace TUTORIALS.Library
             return List.Add(p);
         }
 
-        //private const int _CurrentVersion = 66;
-        private const int _CurrentVersion = 83;
+        //private const int _CurrentVersion = 66;   Chapter 6.6
+        //private const int _CurrentVersion = 83;
+        //private const int _CurrentVersion = 92;
+        private const int _CurrentVersion = 93;
         public void Save(string fileName)
         {
             var fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite);
@@ -141,8 +151,7 @@ namespace TUTORIALS.Library
                 sw.WriteLine(_CurrentVersion.ToString());
                 foreach (Photograph photo in this)
                 {
-                    sw.WriteLine(photo.FileName);
-                    sw.WriteLine(photo.Caption);
+                    photo.Write(sw);
                 }
                 ResetAlbumChanged();
             }
@@ -169,25 +178,29 @@ namespace TUTORIALS.Library
 
             try
             {
+                Clear();
+                _fileName = fileName;
+                Photograph.ReadDelegate ReadPhoto;
                 switch (version)
                 {
                     case 66:
+                        ReadPhoto = Photograph.ReadVersion66;
+                        break;
                     case 83:
-                        string name;
-                        do
-                        {
-                            name = sr.ReadLine();
-                            if (!String.IsNullOrWhiteSpace(name))
-                            {
-                                var p = new Photograph(name);
-                                if (version == 83)
-                                    p.Caption = sr.ReadLine();
-                                Add(p);
-                            }
-                        } while (name!=null);
+                        ReadPhoto = Photograph.ReadVersion83;
+                        break;
+                    case 92:
+                        ReadPhoto = Photograph.ReadVersion92;
                         break;
                     default:
                         throw new IOException("Unrecognized album file format");
+                }
+
+                var p = ReadPhoto(sr);
+                while (p!=null)
+                {
+                    Add(p);
+                    p = ReadPhoto(sr);
                 }
                 ResetAlbumChanged();
             }
@@ -226,6 +239,24 @@ namespace TUTORIALS.Library
                 _defaultDir = value;
                 _initializeDir = true;
             }
+        }
+
+        public string Title
+        {
+            get { return _title; }
+            set { _title = value; }
+        }
+
+        public string Password
+        {
+            get { return _password; }
+            set { _password = value; }
+        }
+
+        public DisplayValEnum DisplayOption
+        {
+            get { return _displayOption; }
+            set { _displayOption = value; }
         }
     }
 }

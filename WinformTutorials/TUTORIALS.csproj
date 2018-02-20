@@ -56,6 +56,12 @@
     <Compile Include="MyPhotos.Designer.cs">
       <DependentUpon>MyPhotos.cs</DependentUpon>
     </Compile>
+    <Compile Include="SideForms\PhotoEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SideForms\PhotoEditDlg.Designer.cs">
+      <DependentUpon>PhotoEditDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="SideForms\PixelDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,6 +75,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MyPhotos.resx">
       <DependentUpon>MyPhotos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SideForms\PhotoEditDlg.resx">
+      <DependentUpon>PhotoEditDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SideForms\PixelDlg.resx">
       <DependentUpon>PixelDlg.cs</DependentUpon>
@@ -95,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PhotoAlbum\TUTORIALS.Library.csproj">

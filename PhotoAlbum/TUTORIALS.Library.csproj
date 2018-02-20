@@ -7,8 +7,8 @@
     <ProjectGuid>{DAAC68CA-E614-4A2E-A853-A956C436BDA6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PhotoAlbum</RootNamespace>
-    <AssemblyName>PhotoAlbum</AssemblyName>
+    <RootNamespace>TUTORIALS.Library</RootNamespace>
+    <AssemblyName>TUTORIALS.Library</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,12 +41,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\BaseEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BaseEditDlg.Designer.cs">
+      <DependentUpon>BaseEditDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="PhotoAlbum.cs" />
     <Compile Include="Photograph.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\BaseEditDlg.resx">
+      <DependentUpon>BaseEditDlg.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,6 +3,7 @@ using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 using TUTORIALS.Library;
+using WinformTutorials.SideForms;
 
 namespace WinformTutorials
 {
@@ -334,18 +335,18 @@ namespace WinformTutorials
 
         private void menuEdit_DropDownOpening(object sender, EventArgs e)
         {
-            menuCaption.Enabled = (_album.Count > 0);
+            menuPhotoProperties.Enabled = (_album.Count > 0);
         }
 
-        private void menuCaption_Click(object sender, EventArgs e)
+        private void menuPhotoPro_Click(object sender, EventArgs e)
         {
             var photo = _album.CurrentPhoto;
-            using (var dlg = new CaptionDlg())
+            using (var dlg = new PhotoEditDlg(_album))
             {
-                dlg.ImageLabel = photo.FileName;
-                dlg.Caption = photo.Caption;
-                if(dlg.ShowDialog()==DialogResult.OK)
-                    _album.SetCaptionCurrentPhoto(dlg.Caption);
+                if (dlg.ShowDialog()==DialogResult.OK)
+                {
+
+                }
                 updateStatus(_album.CurrentPhoto.Caption);
             }
         }
