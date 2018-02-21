@@ -1,4 +1,4 @@
-﻿namespace TUTORIALS.Library.Forms
+﻿namespace WinformTutorials.SideForms
 {
     partial class BaseEditDlg
     {

@@ -67,6 +67,7 @@
             this.statusFileIndex = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusZoomFactor = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelImage = new System.Windows.Forms.Panel();
+            this.albumPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripMainMenu.SuspendLayout();
             this.contextMenuView.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -152,7 +153,8 @@
             this.menuAdd,
             this.menuRemove,
             this.toolStripSeparator5,
-            this.menuPhotoProperties});
+            this.menuPhotoProperties,
+            this.albumPropertiesToolStripMenuItem});
             this.menuEdit.Name = "menuEdit";
             this.menuEdit.Size = new System.Drawing.Size(39, 20);
             this.menuEdit.Text = "&Edit";
@@ -162,7 +164,7 @@
             // 
             this.menuAdd.Name = "menuAdd";
             this.menuAdd.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.menuAdd.Size = new System.Drawing.Size(171, 22);
+            this.menuAdd.Size = new System.Drawing.Size(175, 22);
             this.menuAdd.Text = "&Add";
             this.menuAdd.Click += new System.EventHandler(this.menuAdd_Click);
             // 
@@ -170,20 +172,20 @@
             // 
             this.menuRemove.Name = "menuRemove";
             this.menuRemove.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.menuRemove.Size = new System.Drawing.Size(171, 22);
+            this.menuRemove.Size = new System.Drawing.Size(175, 22);
             this.menuRemove.Text = "&Remove";
             this.menuRemove.Click += new System.EventHandler(this.menuRemove_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(168, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(172, 6);
             // 
             // menuPhotoProperties
             // 
             this.menuPhotoProperties.Enabled = false;
             this.menuPhotoProperties.Name = "menuPhotoProperties";
-            this.menuPhotoProperties.Size = new System.Drawing.Size(171, 22);
+            this.menuPhotoProperties.Size = new System.Drawing.Size(175, 22);
             this.menuPhotoProperties.Text = "&Photo Properties...";
             this.menuPhotoProperties.Click += new System.EventHandler(this.menuPhotoPro_Click);
             // 
@@ -375,6 +377,13 @@
             this.panelImage.Paint += new System.Windows.Forms.PaintEventHandler(this.panelImage_Paint);
             this.panelImage.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelImage_MouseMove);
             // 
+            // albumPropertiesToolStripMenuItem
+            // 
+            this.albumPropertiesToolStripMenuItem.Name = "albumPropertiesToolStripMenuItem";
+            this.albumPropertiesToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.albumPropertiesToolStripMenuItem.Text = "A&lbum Properties...";
+            this.albumPropertiesToolStripMenuItem.Click += new System.EventHandler(this.albumPropertiesToolStripMenuItem_Click);
+            // 
             // MyPhotos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -437,6 +446,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuPhotoProperties;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem menuPixel;
+        private System.Windows.Forms.ToolStripMenuItem albumPropertiesToolStripMenuItem;
 
 
     }

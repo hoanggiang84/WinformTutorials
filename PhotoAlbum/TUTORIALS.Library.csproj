@@ -41,11 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisplayValEnum.cs" />
     <Compile Include="Forms\BaseEditDlg.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\BaseEditDlg.Designer.cs">
       <DependentUpon>BaseEditDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PasswordDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PasswordDlg.Designer.cs">
+      <DependentUpon>PasswordDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="PhotoAlbum.cs" />
     <Compile Include="Photograph.cs" />
@@ -57,6 +64,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Forms\BaseEditDlg.resx">
       <DependentUpon>BaseEditDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PasswordDlg.resx">
+      <DependentUpon>PasswordDlg.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

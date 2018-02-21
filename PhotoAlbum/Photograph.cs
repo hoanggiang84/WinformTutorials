@@ -182,6 +182,20 @@ namespace TUTORIALS.Library
             return p;
         }
 
+        public string GetDisplayText(DisplayValEnum displayOption)
+        {
+            switch (displayOption)
+            {
+                case DisplayValEnum.FileName:
+                    return Path.GetFileName(FileName);
+                case DisplayValEnum.Date:
+                    return DateTaken.ToString("g");
+                default:
+                case DisplayValEnum.Caption:
+                    return Caption;
+            }
+        }
+
         public delegate Photograph ReadDelegate(StreamReader sr);
     }
 }

@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SideForms\AlbumEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SideForms\AlbumEditDlg.Designer.cs">
+      <DependentUpon>AlbumEditDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="SideForms\CaptionDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,6 +76,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="SideForms\AlbumEditDlg.resx">
+      <DependentUpon>AlbumEditDlg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SideForms\CaptionDlg.resx">
       <DependentUpon>CaptionDlg.cs</DependentUpon>
     </EmbeddedResource>

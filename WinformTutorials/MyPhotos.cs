@@ -154,7 +154,7 @@ namespace WinformTutorials
             if(_album.Count>0)
             {
                 var photo = _album.CurrentPhoto;
-                updateStatus(photo.Caption);
+                updateStatus(_album.CurrentDisplayText);
                 statusImageSize.Text = string.Format("{0:#} x {1:#}", photo.Image.Width, photo.Image.Height);
                 statusFileIndex.Text = string.Format("{0}/{1}", _album.CurrentPosition + 1, _album.Count);
             }
@@ -425,6 +425,19 @@ namespace WinformTutorials
         private void panelImage_MouseMove(object sender, MouseEventArgs e)
         {
             UpdatePixelData(e.X, e.Y);
+        }
+
+        private void albumPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new AlbumEditDlg(_album))
+            {
+                if(dlg.ShowDialog() == DialogResult.OK)
+                {
+                    _album.SetAlbumChanged();
+                    SetTitleBar();
+                    Invalidate();
+                }
+            }
         }
     }
 }

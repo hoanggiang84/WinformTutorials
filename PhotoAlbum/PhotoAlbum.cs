@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using System.Windows.Forms;
+using WinformTutorials.SideForms;
 
 namespace TUTORIALS.Library
 {
@@ -9,12 +11,6 @@ namespace TUTORIALS.Library
         private string _title;
         private string _password;
         private DisplayValEnum _displayOption = DisplayValEnum.Caption;
-
-        public enum DisplayValEnum
-        {
-            FileName, Caption, Date
-        }
-
 
 
         public bool IsChanged { get; private set; }
@@ -138,17 +134,20 @@ namespace TUTORIALS.Library
             return List.Add(p);
         }
 
-        //private const int _CurrentVersion = 66;   Chapter 6.6
-        //private const int _CurrentVersion = 83;
-        //private const int _CurrentVersion = 92;
-        private const int _CurrentVersion = 93;
+        //private const int CurrentVersion = 66;   Chapter 6.6
+        //private const int CurrentVersion = 83;
+        //private const int CurrentVersion = 92;
+        private const int CurrentVersion = 93;
         public void Save(string fileName)
         {
             var fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite);
             var sw = new StreamWriter(fs);
             try
             {
-                sw.WriteLine(_CurrentVersion.ToString());
+                sw.WriteLine(CurrentVersion.ToString());
+                sw.WriteLine(_title);
+                sw.WriteLine(_password);
+                sw.WriteLine( ((int)_displayOption).ToString());
                 foreach (Photograph photo in this)
                 {
                     photo.Write(sw);
@@ -180,6 +179,20 @@ namespace TUTORIALS.Library
             {
                 Clear();
                 _fileName = fileName;
+                ReadAlbumData(sr, version);
+
+                if(!string.IsNullOrEmpty(_password))
+                {
+                    using (var passDlg = new PasswordDlg())
+                    {
+                        passDlg.Text = string.Format("Opening album {0}", Path.GetFileName(_fileName));
+                        if(passDlg.ShowDialog() == DialogResult.OK && passDlg.Password != _password)
+                        {
+                            throw new ApplicationException("Invalid password provided");
+                        }
+                    }
+                }
+
                 Photograph.ReadDelegate ReadPhoto;
                 switch (version)
                 {
@@ -190,6 +203,7 @@ namespace TUTORIALS.Library
                         ReadPhoto = Photograph.ReadVersion83;
                         break;
                     case 92:
+                    case 93:
                         ReadPhoto = Photograph.ReadVersion92;
                         break;
                     default:
@@ -209,6 +223,30 @@ namespace TUTORIALS.Library
                 sr.Close();
                 fs.Close();
             }
+        }
+
+        private void ReadAlbumData(StreamReader sr, int version)
+        {
+            _title = null;
+            _password = null;
+            _displayOption = DisplayValEnum.Caption;
+
+            if(version>=93)
+            {
+                _title = sr.ReadLine();
+                _password = sr.ReadLine();
+                _displayOption = (DisplayValEnum) (int.Parse(sr.ReadLine()));
+            }
+
+            if(string.IsNullOrEmpty(_title))
+            {
+                _title = Path.GetFileNameWithoutExtension(_fileName);
+            }
+        }
+
+        public string CurrentDisplayText
+        {
+            get { return CurrentPhoto.GetDisplayText(_displayOption); }
         }
 
         private static void InitDefaultDir()

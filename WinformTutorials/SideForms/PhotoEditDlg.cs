@@ -9,7 +9,7 @@ using TUTORIALS.Library;
 
 namespace WinformTutorials.SideForms
 {
-    public partial class PhotoEditDlg : TUTORIALS.Library.Forms.BaseEditDlg
+    public partial class PhotoEditDlg : BaseEditDlg
     {
         private PhotoAlbum _album;
 

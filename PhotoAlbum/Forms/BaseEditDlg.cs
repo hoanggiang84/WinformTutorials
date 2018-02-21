@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TUTORIALS.Library.Forms
+namespace WinformTutorials.SideForms
 {
     public partial class BaseEditDlg : Form
     {
