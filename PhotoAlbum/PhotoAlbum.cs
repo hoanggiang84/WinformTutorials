@@ -12,7 +12,6 @@ namespace TUTORIALS.Library
         private string _password;
         private DisplayValEnum _displayOption = DisplayValEnum.Caption;
 
-
         public bool IsChanged { get; private set; }
         private int _currentPos;
         public int CurrentPosition
@@ -178,10 +177,8 @@ namespace TUTORIALS.Library
             try
             {
                 Clear();
-                ResetAlbumChanged();
                 _fileName = fileName;
                 ReadAlbumData(sr, version);
-
                 if(!string.IsNullOrEmpty(_password))
                 {
                     using (var passDlg = new PasswordDlg())
@@ -189,6 +186,7 @@ namespace TUTORIALS.Library
                         passDlg.Text = string.Format("Opening album {0}", Path.GetFileName(_fileName));
                         if(passDlg.ShowDialog() == DialogResult.OK && passDlg.Password != _password)
                         {
+
                             throw new ApplicationException("Invalid password provided");
                         }
                     }
@@ -217,10 +215,10 @@ namespace TUTORIALS.Library
                     Add(p);
                     p = ReadPhoto(sr);
                 }
-
             }
             finally
             {
+                ResetAlbumChanged();
                 sr.Close();
                 fs.Close();
             }
@@ -265,7 +263,7 @@ namespace TUTORIALS.Library
         {
             get
             {
-                if (_initializeDir)
+                if (!_initializeDir)
                 {
                     InitDefaultDir();
                     _initializeDir = false;
@@ -297,5 +295,61 @@ namespace TUTORIALS.Library
             get { return _displayOption; }
             set { _displayOption = value; }
         }
+
+        public virtual Photograph this[int index]
+        {
+            get { return (Photograph) (List[index]); }
+            set { List[index] = value; }
+        }
+
+        public virtual bool IsFixedSize
+        {
+            get { return false; }
+        }
+
+        public virtual bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        public virtual bool Contains(Photograph photo)
+        {
+            return List.Contains(photo);
+        }
+
+        public virtual void Insert(int index, Photograph photo)
+        {
+            List.Insert(index,photo);
+            SetAlbumChanged();
+        }
+
+        public virtual void Remove(Photograph photo)
+        {
+            List.Remove(photo);
+            SetAlbumChanged();
+        }
+
+        public void MoveBefore(int i)
+        {
+            if (i > 0 && i < Count)
+            {
+                var photo = this[i];
+                RemoveAt(i);
+                Insert(i-1,photo);
+                SetAlbumChanged();
+            }
+        }
+
+        public void MoveAfter(int i)
+        {
+            if (i >= 0 && i < Count - 1)
+            {
+                var photo = this[i];
+                RemoveAt(i);
+                Insert(i + 1, photo);
+                SetAlbumChanged();
+            }
+        }
+
     }
 }

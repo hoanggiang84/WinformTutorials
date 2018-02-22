@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanelInfo = new System.Windows.Forms.TableLayoutPanel();
-            this.textBoxPhotographer = new System.Windows.Forms.TextBox();
             this.textBoxDateTaken = new System.Windows.Forms.TextBox();
             this.textBoxCaption = new System.Windows.Forms.TextBox();
             this.labelPhotoFile = new System.Windows.Forms.Label();
@@ -37,6 +36,7 @@
             this.labelDateTaken = new System.Windows.Forms.Label();
             this.labelPhotographer = new System.Windows.Forms.Label();
             this.textBoxPhotoFile = new System.Windows.Forms.TextBox();
+            this.comboBoxPhotographer = new System.Windows.Forms.ComboBox();
             this.labelNotes = new System.Windows.Forms.Label();
             this.textBoxNotes = new System.Windows.Forms.TextBox();
             this.panelInfo.SuspendLayout();
@@ -52,7 +52,6 @@
             this.tableLayoutPanelInfo.ColumnCount = 2;
             this.tableLayoutPanelInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 34.39716F));
             this.tableLayoutPanelInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65.60284F));
-            this.tableLayoutPanelInfo.Controls.Add(this.textBoxPhotographer, 1, 3);
             this.tableLayoutPanelInfo.Controls.Add(this.textBoxDateTaken, 1, 2);
             this.tableLayoutPanelInfo.Controls.Add(this.textBoxCaption, 1, 1);
             this.tableLayoutPanelInfo.Controls.Add(this.labelPhotoFile, 0, 0);
@@ -60,6 +59,7 @@
             this.tableLayoutPanelInfo.Controls.Add(this.labelDateTaken, 0, 2);
             this.tableLayoutPanelInfo.Controls.Add(this.labelPhotographer, 0, 3);
             this.tableLayoutPanelInfo.Controls.Add(this.textBoxPhotoFile, 1, 0);
+            this.tableLayoutPanelInfo.Controls.Add(this.comboBoxPhotographer, 1, 3);
             this.tableLayoutPanelInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelInfo.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanelInfo.Name = "tableLayoutPanelInfo";
@@ -70,14 +70,6 @@
             this.tableLayoutPanelInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanelInfo.Size = new System.Drawing.Size(282, 115);
             this.tableLayoutPanelInfo.TabIndex = 0;
-            // 
-            // textBoxPhotographer
-            // 
-            this.textBoxPhotographer.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.textBoxPhotographer.Location = new System.Drawing.Point(135, 89);
-            this.textBoxPhotographer.Name = "textBoxPhotographer";
-            this.textBoxPhotographer.Size = new System.Drawing.Size(144, 20);
-            this.textBoxPhotographer.TabIndex = 7;
             // 
             // textBoxDateTaken
             // 
@@ -150,6 +142,20 @@
             this.textBoxPhotoFile.Size = new System.Drawing.Size(144, 20);
             this.textBoxPhotoFile.TabIndex = 1;
             // 
+            // comboBoxPhotographer
+            // 
+            this.comboBoxPhotographer.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.comboBoxPhotographer.FormattingEnabled = true;
+            this.comboBoxPhotographer.Location = new System.Drawing.Point(135, 89);
+            this.comboBoxPhotographer.MaxDropDownItems = 4;
+            this.comboBoxPhotographer.Name = "comboBoxPhotographer";
+            this.comboBoxPhotographer.Size = new System.Drawing.Size(144, 21);
+            this.comboBoxPhotographer.Sorted = true;
+            this.comboBoxPhotographer.TabIndex = 7;
+            this.comboBoxPhotographer.TextChanged += new System.EventHandler(this.comboBoxPhotographer_TextChanged);
+            this.comboBoxPhotographer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxPhotographer_KeyPress);
+            this.comboBoxPhotographer.Validated += new System.EventHandler(this.comboBoxPhotographer_Validated);
+            // 
             // labelNotes
             // 
             this.labelNotes.AutoSize = true;
@@ -191,7 +197,6 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelInfo;
-        private System.Windows.Forms.TextBox textBoxPhotographer;
         private System.Windows.Forms.TextBox textBoxDateTaken;
         private System.Windows.Forms.TextBox textBoxCaption;
         private System.Windows.Forms.Label labelPhotoFile;
@@ -201,5 +206,6 @@
         private System.Windows.Forms.TextBox textBoxPhotoFile;
         private System.Windows.Forms.Label labelNotes;
         private System.Windows.Forms.TextBox textBoxNotes;
+        private System.Windows.Forms.ComboBox comboBoxPhotographer;
     }
 }

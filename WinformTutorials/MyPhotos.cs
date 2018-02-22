@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using TUTORIALS.Library;
 using TUTORIALS.Library.Forms;
-using WinformTutorials.SideForms;
 
 namespace WinformTutorials
 {
@@ -152,7 +151,7 @@ namespace WinformTutorials
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if(_album.Count>0)
+            if(_album.Count > 0)
             {
                 var photo = _album.CurrentPhoto;
                 updateStatus(_album.CurrentDisplayText);

@@ -24,14 +24,32 @@ namespace TUTORIALS.Library.Forms
 
         protected override void ResetSettings()
         {
+            if(comboBoxPhotographer.Items.Count == 0)
+            {
+                comboBoxPhotographer.BeginUpdate();
+                comboBoxPhotographer.Items.Clear();
+                comboBoxPhotographer.Items.Add("unknown");
+
+                foreach (Photograph p in _album)
+                {
+                    if (p.Photographer != null
+                        && !comboBoxPhotographer.Items.Contains(p.Photographer))
+                    {
+                        comboBoxPhotographer.Items.Add(p.Photographer);
+                    } 
+                }
+
+                comboBoxPhotographer.EndUpdate();
+            }
+
             var photo = _album.CurrentPhoto;
             if(photo!=null)
             {
                 textBoxPhotoFile.Text = photo.FileName;
                 textBoxCaption.Text = photo.Caption;
                 textBoxDateTaken.Text = photo.DateTaken.ToString();
-                textBoxPhotographer.Text = photo.Photographer;
                 textBoxNotes.Text = photo.Notes;
+                comboBoxPhotographer.SelectedItem = photo.Photographer;
             }
 
             base.ResetSettings();
@@ -43,7 +61,7 @@ namespace TUTORIALS.Library.Forms
             if(photo!=null)
             {
                 photo.Caption = textBoxCaption.Text;
-                photo.Photographer = textBoxPhotographer.Text;
+                photo.Photographer = comboBoxPhotographer.Text;
                 photo.Notes = textBoxNotes.Text;
                 _album.SetAlbumChanged();
             }
@@ -59,6 +77,38 @@ namespace TUTORIALS.Library.Forms
         private void textBoxCaption_TextChanged(object sender, EventArgs e)
         {
             Text = string.Format("{0} - Photo Properties", textBoxCaption.Text);
+        }
+
+        private void comboBoxPhotographer_Validated(object sender, EventArgs e)
+        {
+            var pg = comboBoxPhotographer.Text;
+            if(!comboBoxPhotographer.Items.Contains(pg))
+            {
+                _album.CurrentPhoto.Photographer = pg;
+                comboBoxPhotographer.Items.Add(pg);
+            }
+            comboBoxPhotographer.SelectedItem = pg;
+        }
+
+        private void comboBoxPhotographer_TextChanged(object sender, EventArgs e)
+        {
+            var text = comboBoxPhotographer.Text;
+            var index = comboBoxPhotographer.FindString(text);
+            var strFound = index > 0;
+            comboBoxPhotographer.DroppedDown = strFound;
+            if (strFound)
+            {
+                var newText = comboBoxPhotographer.Items[index].ToString();
+                comboBoxPhotographer.Text = newText;
+                comboBoxPhotographer.SelectionStart = text.Length;
+                comboBoxPhotographer.SelectionLength = newText.Length - text.Length;
+            }
+        }
+
+        private void comboBoxPhotographer_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            var c = e.KeyChar;
+            e.Handled = !(char.IsWhiteSpace(c) || char.IsLetterOrDigit(c) || char.IsControl(c));
         }
     }
 }
