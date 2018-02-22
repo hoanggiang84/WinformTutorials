@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Net.Mime;
 using System.Text;
 using System.Windows.Forms;
-using TUTORIALS.Library;
 
-namespace WinformTutorials.SideForms
+namespace TUTORIALS.Library.Forms
 {
-    public partial class AlbumEditDlg : SideForms.BaseEditDlg
+    public partial class AlbumEditDlg : BaseEditDlg
     {
         private PhotoAlbum _album;
         public AlbumEditDlg(PhotoAlbum album)

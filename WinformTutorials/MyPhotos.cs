@@ -3,6 +3,7 @@ using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 using TUTORIALS.Library;
+using TUTORIALS.Library.Forms;
 using WinformTutorials.SideForms;
 
 namespace WinformTutorials
@@ -340,13 +341,9 @@ namespace WinformTutorials
 
         private void menuPhotoPro_Click(object sender, EventArgs e)
         {
-            var photo = _album.CurrentPhoto;
             using (var dlg = new PhotoEditDlg(_album))
             {
-                if (dlg.ShowDialog()==DialogResult.OK)
-                {
-
-                }
+                if (dlg.ShowDialog()==DialogResult.OK) { }
                 updateStatus(_album.CurrentPhoto.Caption);
             }
         }

@@ -1,4 +1,4 @@
-﻿namespace WinformTutorials.SideForms
+﻿namespace TUTORIALS.Library.Forms
 {
     partial class PhotoEditDlg
     {

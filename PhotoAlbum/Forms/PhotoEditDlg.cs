@@ -6,8 +6,9 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using TUTORIALS.Library;
+using TUTORIALS.Library.Forms;
 
-namespace WinformTutorials.SideForms
+namespace TUTORIALS.Library.Forms
 {
     public partial class PhotoEditDlg : BaseEditDlg
     {

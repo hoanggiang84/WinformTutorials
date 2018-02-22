@@ -44,12 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SideForms\AlbumEditDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SideForms\AlbumEditDlg.Designer.cs">
-      <DependentUpon>AlbumEditDlg.cs</DependentUpon>
-    </Compile>
     <Compile Include="SideForms\CaptionDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,12 +56,6 @@
     <Compile Include="MyPhotos.Designer.cs">
       <DependentUpon>MyPhotos.cs</DependentUpon>
     </Compile>
-    <Compile Include="SideForms\PhotoEditDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SideForms\PhotoEditDlg.Designer.cs">
-      <DependentUpon>PhotoEditDlg.cs</DependentUpon>
-    </Compile>
     <Compile Include="SideForms\PixelDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,17 +64,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="SideForms\AlbumEditDlg.resx">
-      <DependentUpon>AlbumEditDlg.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SideForms\CaptionDlg.resx">
       <DependentUpon>CaptionDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MyPhotos.resx">
       <DependentUpon>MyPhotos.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SideForms\PhotoEditDlg.resx">
-      <DependentUpon>PhotoEditDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SideForms\PixelDlg.resx">
       <DependentUpon>PixelDlg.cs</DependentUpon>

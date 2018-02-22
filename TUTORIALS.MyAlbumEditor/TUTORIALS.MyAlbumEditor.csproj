@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DAAC68CA-E614-4A2E-A853-A956C436BDA6}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{5EBDE8EA-B9C1-4E0C-AE20-2C9BDA896E3A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TUTORIALS.Library</RootNamespace>
-    <AssemblyName>TUTORIALS.Library</AssemblyName>
+    <RootNamespace>TUTORIALS.MyAlbumEditor</RootNamespace>
+    <AssemblyName>TUTORIALS.MyAlbumEditor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,60 +34,54 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DisplayValEnum.cs" />
-    <Compile Include="Forms\AlbumEditDlg.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AlbumEditDlg.Designer.cs">
-      <DependentUpon>AlbumEditDlg.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\BaseEditDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\BaseEditDlg.Designer.cs">
-      <DependentUpon>BaseEditDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\PasswordDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PasswordDlg.Designer.cs">
-      <DependentUpon>PasswordDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\PhotoEditDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PhotoEditDlg.Designer.cs">
-      <DependentUpon>PhotoEditDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PhotoAlbum.cs" />
-    <Compile Include="Photograph.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\AlbumEditDlg.resx">
-      <DependentUpon>AlbumEditDlg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\BaseEditDlg.resx">
-      <DependentUpon>BaseEditDlg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PasswordDlg.resx">
-      <DependentUpon>PasswordDlg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PhotoEditDlg.resx">
-      <DependentUpon>PhotoEditDlg.cs</DependentUpon>
-    </EmbeddedResource>
+    <ProjectReference Include="..\PhotoAlbum\TUTORIALS.Library.csproj">
+      <Project>{daac68ca-e614-4a2e-a853-a956c436bda6}</Project>
+      <Name>TUTORIALS.Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

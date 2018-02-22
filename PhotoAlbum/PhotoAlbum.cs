@@ -178,6 +178,7 @@ namespace TUTORIALS.Library
             try
             {
                 Clear();
+                ResetAlbumChanged();
                 _fileName = fileName;
                 ReadAlbumData(sr, version);
 
@@ -216,7 +217,7 @@ namespace TUTORIALS.Library
                     Add(p);
                     p = ReadPhoto(sr);
                 }
-                ResetAlbumChanged();
+
             }
             finally
             {
