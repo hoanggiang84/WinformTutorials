@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBoxAlbums = new System.Windows.Forms.GroupBox();
+            this.comboBoxAlbums = new System.Windows.Forms.ComboBox();
             this.buttonAlbumProperties = new System.Windows.Forms.Button();
             this.groupBoxPhotographs = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanelPhotoCtrl = new System.Windows.Forms.TableLayoutPanel();
@@ -39,9 +40,9 @@
             this.buttonPhotoProperties = new System.Windows.Forms.Button();
             this.listBoxPhotos = new System.Windows.Forms.ListBox();
             this.buttonClose = new System.Windows.Forms.Button();
-            this.comboBoxAlbums = new System.Windows.Forms.ComboBox();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.thumbnailsMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuThumbs = new System.Windows.Forms.ToolStripMenuItem();
+            this.imagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxAlbums.SuspendLayout();
             this.groupBoxPhotographs.SuspendLayout();
             this.tableLayoutPanelPhotoCtrl.SuspendLayout();
@@ -60,6 +61,19 @@
             this.groupBoxAlbums.TabIndex = 0;
             this.groupBoxAlbums.TabStop = false;
             this.groupBoxAlbums.Text = "&Albums";
+            // 
+            // comboBoxAlbums
+            // 
+            this.comboBoxAlbums.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxAlbums.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxAlbums.FormattingEnabled = true;
+            this.comboBoxAlbums.Location = new System.Drawing.Point(6, 21);
+            this.comboBoxAlbums.Name = "comboBoxAlbums";
+            this.comboBoxAlbums.Size = new System.Drawing.Size(256, 21);
+            this.comboBoxAlbums.Sorted = true;
+            this.comboBoxAlbums.TabIndex = 2;
+            this.comboBoxAlbums.SelectedIndexChanged += new System.EventHandler(this.comboBoxAlbums_SelectedIndexChanged);
             // 
             // buttonAlbumProperties
             // 
@@ -159,12 +173,16 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBoxPhotos.BackColor = System.Drawing.SystemColors.Control;
+            this.listBoxPhotos.ContextMenuStrip = this.contextMenu;
+            this.listBoxPhotos.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.listBoxPhotos.FormattingEnabled = true;
             this.listBoxPhotos.Location = new System.Drawing.Point(6, 19);
             this.listBoxPhotos.Name = "listBoxPhotos";
             this.listBoxPhotos.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listBoxPhotos.Size = new System.Drawing.Size(256, 108);
             this.listBoxPhotos.TabIndex = 0;
+            this.listBoxPhotos.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxPhotos_DrawItem);
+            this.listBoxPhotos.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.listBoxPhotos_MeasureItem);
             this.listBoxPhotos.SelectedIndexChanged += new System.EventHandler(this.listBoxPhotos_SelectedIndexChanged);
             this.listBoxPhotos.DoubleClick += new System.EventHandler(this.listBoxPhotos_DoubleClick);
             // 
@@ -179,32 +197,29 @@
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
-            // comboBoxAlbums
-            // 
-            this.comboBoxAlbums.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxAlbums.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxAlbums.FormattingEnabled = true;
-            this.comboBoxAlbums.Location = new System.Drawing.Point(6, 21);
-            this.comboBoxAlbums.Name = "comboBoxAlbums";
-            this.comboBoxAlbums.Size = new System.Drawing.Size(256, 21);
-            this.comboBoxAlbums.Sorted = true;
-            this.comboBoxAlbums.TabIndex = 2;
-            this.comboBoxAlbums.SelectedIndexChanged += new System.EventHandler(this.comboBoxAlbums_SelectedIndexChanged);
-            // 
             // contextMenu
             // 
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.thumbnailsMenu});
+            this.menuThumbs,
+            this.imagesToolStripMenuItem});
             this.contextMenu.Name = "contextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(153, 48);
+            this.contextMenu.Size = new System.Drawing.Size(153, 70);
             // 
-            // thumbnailsMenu
+            // menuThumbs
             // 
-            this.thumbnailsMenu.Name = "thumbnailsMenu";
-            this.thumbnailsMenu.Size = new System.Drawing.Size(152, 22);
-            this.thumbnailsMenu.Text = "&Thumbnails";
-            this.thumbnailsMenu.Click += new System.EventHandler(this.thumbnailsMenu_Click);
+            this.menuThumbs.Checked = true;
+            this.menuThumbs.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.menuThumbs.Name = "menuThumbs";
+            this.menuThumbs.Size = new System.Drawing.Size(152, 22);
+            this.menuThumbs.Text = "&Thumbnails";
+            this.menuThumbs.Click += new System.EventHandler(this.menuThumbs_Click);
+            // 
+            // imagesToolStripMenuItem
+            // 
+            this.imagesToolStripMenuItem.Name = "imagesToolStripMenuItem";
+            this.imagesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.imagesToolStripMenuItem.Text = "&Images...";
+            this.imagesToolStripMenuItem.Click += new System.EventHandler(this.imagesToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -239,7 +254,8 @@
         private System.Windows.Forms.Button buttonMoveUp;
         private System.Windows.Forms.ComboBox comboBoxAlbums;
         private System.Windows.Forms.ContextMenuStrip contextMenu;
-        private System.Windows.Forms.ToolStripMenuItem thumbnailsMenu;
+        private System.Windows.Forms.ToolStripMenuItem menuThumbs;
+        private System.Windows.Forms.ToolStripMenuItem imagesToolStripMenuItem;
     }
 }
 

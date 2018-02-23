@@ -16,6 +16,8 @@ namespace TUTORIALS.MyAlbumEditor
     public partial class MainForm : Form
     {
         private PhotoAlbum _album;
+        private static Rectangle _drawRect = new Rectangle(0, 0, 45, 45);
+        private static SolidBrush _textBrush = new SolidBrush(SystemColors.WindowText);
 
         public MainForm()
         {
@@ -191,13 +193,102 @@ namespace TUTORIALS.MyAlbumEditor
             }
         }
 
-        private void thumbnailsMenu_Click(object sender, EventArgs e)
+        private void menuThumbs_Click(object sender, EventArgs e)
         {
-            thumbnailsMenu.Checked = !thumbnailsMenu.Checked;
-            if(thumbnailsMenu.Checked)
+            menuThumbs.Checked = !menuThumbs.Checked;
+            if(menuThumbs.Checked)
             {
-                listBoxPhotos.DrawMode
+                listBoxPhotos.DrawMode = DrawMode.OwnerDrawVariable;
             }
+            else
+            {
+                listBoxPhotos.DrawMode = DrawMode.Normal;
+                listBoxPhotos.ItemHeight = listBoxPhotos.Font.Height + 2;
+            }
+        }
+
+        private void listBoxPhotos_MeasureItem(object sender, MeasureItemEventArgs e)
+        {
+            var p = _album[e.Index];
+            var scaledRect = p.ScaleToFit(_drawRect);
+
+            e.ItemHeight = Math.Max(scaledRect.Height, listBoxPhotos.Font.Height) + 2;
+            e.ItemWidth = scaledRect.Width + 2 + (int) e.Graphics.MeasureString(p.Caption, listBoxPhotos.Font).Width;
+        }
+
+        private void listBoxPhotos_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            var g = e.Graphics;
+            var p = _album[e.Index];
+
+            var scaledRect = p.ScaleToFit(_drawRect);
+            var imageRect = e.Bounds;
+            imageRect.Y += 1;
+            imageRect.Height = scaledRect.Height;
+            imageRect.X += 2;
+            imageRect.Width = scaledRect.Width;
+
+            g.DrawImage(p.Thumbnail, imageRect);
+            g.DrawRectangle(Pens.Black, imageRect);
+
+            var textRect = new Rectangle(imageRect.Right + 2, imageRect.Y + ((imageRect.Height - e.Font.Height)/2),
+                                         e.Bounds.Width - imageRect.Width - 4, e.Font.Height);
+
+            if((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+                _textBrush.Color = SystemColors.Highlight;
+                g.FillRectangle(_textBrush, textRect);
+                _textBrush.Color = SystemColors.HighlightText;
+            }
+            else
+            {
+                _textBrush.Color = SystemColors.Window;
+                g.FillRectangle(_textBrush,textRect);
+                _textBrush.Color = SystemColors.WindowText;
+            }
+
+            g.DrawString(p.Caption, e.Font, _textBrush, textRect);
+        }
+
+        private void imagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var imagesDlg = new Form();
+            var tcImages = new TabControl();
+
+            imagesDlg.SuspendLayout();
+            tcImages.SuspendLayout();
+
+            foreach (Photograph photograph in _album)
+            {
+                var shortFileName = Path.GetFileName(photograph.FileName);
+                var newPage = new TabPage(shortFileName);
+                newPage.SuspendLayout();
+                var pbox = new PictureBox
+                               {
+                                   BorderStyle = BorderStyle.Fixed3D,
+                                   Dock = DockStyle.Fill,
+                                   Image = photograph.Image,
+                                   SizeMode = PictureBoxSizeMode.StretchImage
+                               };
+                newPage.Controls.Add(pbox);
+                newPage.ToolTipText = photograph.FileName;
+                tcImages.Controls.Add(newPage);
+                newPage.ResumeLayout();
+            }
+
+            tcImages.Dock = DockStyle.Fill;
+            tcImages.HotTrack = true;
+            tcImages.ShowToolTips = true;
+
+            imagesDlg.Controls.Add(tcImages);
+            imagesDlg.ShowInTaskbar = false;
+            imagesDlg.Size = new Size(400,300);
+            imagesDlg.Text = "Images in " + Path.GetFileName(_album.FileName);
+
+            tcImages.ResumeLayout();
+            imagesDlg.ResumeLayout();
+            imagesDlg.ShowDialog();
+            imagesDlg.Dispose();
         }
     }
 }

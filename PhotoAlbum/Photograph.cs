@@ -7,13 +7,14 @@ namespace TUTORIALS.Library
 {
     public class Photograph:IDisposable
     {
+        private const int ThumbSize = 90;
         private readonly string _fileName;
         private string _caption;
         private string _photographer;
         private string _notes;
         private DateTime _dateTaken;
         private Bitmap _bitmap;
-
+        private Bitmap _thumbnail;
 
         public Photograph(string fileName)
         {
@@ -106,6 +107,13 @@ namespace TUTORIALS.Library
 
         public void Dispose()
         {
+            if(_bitmap!= null && _bitmap != InvalidPhotoImage)
+                _bitmap.Dispose();
+
+            if(_thumbnail != null)
+                _thumbnail.Dispose();
+            
+            _thumbnail = null;
             _bitmap = null;
         }
 
@@ -196,6 +204,22 @@ namespace TUTORIALS.Library
             }
         }
 
+        public Bitmap Thumbnail
+        {
+            get
+            {
+                if(_thumbnail==null)
+                {
+                    var scaleRect = ScaleToFit(new Rectangle(0, 0, ThumbSize, ThumbSize));
+                    var bm = new Bitmap(scaleRect.Width, scaleRect.Height);
+                    var g = Graphics.FromImage(bm);
+                    var gu = g.PageUnit;
+                    g.DrawImage(Image, bm.GetBounds(ref gu));
+                    _thumbnail = bm;
+                }
+                return _thumbnail;
+            }
+        }
         public delegate Photograph ReadDelegate(StreamReader sr);
     }
 }
