@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanelInfo = new System.Windows.Forms.TableLayoutPanel();
-            this.textBoxDateTaken = new System.Windows.Forms.TextBox();
             this.textBoxCaption = new System.Windows.Forms.TextBox();
             this.labelPhotoFile = new System.Windows.Forms.Label();
             this.labelCaption = new System.Windows.Forms.Label();
@@ -37,6 +36,7 @@
             this.labelPhotographer = new System.Windows.Forms.Label();
             this.textBoxPhotoFile = new System.Windows.Forms.TextBox();
             this.comboBoxPhotographer = new System.Windows.Forms.ComboBox();
+            this.dtpDateTaken = new System.Windows.Forms.DateTimePicker();
             this.labelNotes = new System.Windows.Forms.Label();
             this.textBoxNotes = new System.Windows.Forms.TextBox();
             this.panelInfo.SuspendLayout();
@@ -52,7 +52,6 @@
             this.tableLayoutPanelInfo.ColumnCount = 2;
             this.tableLayoutPanelInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 34.39716F));
             this.tableLayoutPanelInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65.60284F));
-            this.tableLayoutPanelInfo.Controls.Add(this.textBoxDateTaken, 1, 2);
             this.tableLayoutPanelInfo.Controls.Add(this.textBoxCaption, 1, 1);
             this.tableLayoutPanelInfo.Controls.Add(this.labelPhotoFile, 0, 0);
             this.tableLayoutPanelInfo.Controls.Add(this.labelCaption, 0, 1);
@@ -60,6 +59,7 @@
             this.tableLayoutPanelInfo.Controls.Add(this.labelPhotographer, 0, 3);
             this.tableLayoutPanelInfo.Controls.Add(this.textBoxPhotoFile, 1, 0);
             this.tableLayoutPanelInfo.Controls.Add(this.comboBoxPhotographer, 1, 3);
+            this.tableLayoutPanelInfo.Controls.Add(this.dtpDateTaken, 1, 2);
             this.tableLayoutPanelInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelInfo.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanelInfo.Name = "tableLayoutPanelInfo";
@@ -70,14 +70,6 @@
             this.tableLayoutPanelInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanelInfo.Size = new System.Drawing.Size(282, 115);
             this.tableLayoutPanelInfo.TabIndex = 0;
-            // 
-            // textBoxDateTaken
-            // 
-            this.textBoxDateTaken.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.textBoxDateTaken.Location = new System.Drawing.Point(135, 60);
-            this.textBoxDateTaken.Name = "textBoxDateTaken";
-            this.textBoxDateTaken.Size = new System.Drawing.Size(144, 20);
-            this.textBoxDateTaken.TabIndex = 5;
             // 
             // textBoxCaption
             // 
@@ -156,6 +148,16 @@
             this.comboBoxPhotographer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxPhotographer_KeyPress);
             this.comboBoxPhotographer.Validated += new System.EventHandler(this.comboBoxPhotographer_Validated);
             // 
+            // dtpDateTaken
+            // 
+            this.dtpDateTaken.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.dtpDateTaken.CustomFormat = "MM/dd/yy \'at\' hh:mm tt";
+            this.dtpDateTaken.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpDateTaken.Location = new System.Drawing.Point(135, 60);
+            this.dtpDateTaken.Name = "dtpDateTaken";
+            this.dtpDateTaken.Size = new System.Drawing.Size(144, 20);
+            this.dtpDateTaken.TabIndex = 8;
+            // 
             // labelNotes
             // 
             this.labelNotes.AutoSize = true;
@@ -182,6 +184,7 @@
             this.Controls.Add(this.textBoxNotes);
             this.Controls.Add(this.labelNotes);
             this.Name = "PhotoEditDlg";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "PhotoEditDlg";
             this.Controls.SetChildIndex(this.panelInfo, 0);
             this.Controls.SetChildIndex(this.labelNotes, 0);
@@ -197,7 +200,6 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelInfo;
-        private System.Windows.Forms.TextBox textBoxDateTaken;
         private System.Windows.Forms.TextBox textBoxCaption;
         private System.Windows.Forms.Label labelPhotoFile;
         private System.Windows.Forms.Label labelCaption;
@@ -207,5 +209,6 @@
         private System.Windows.Forms.Label labelNotes;
         private System.Windows.Forms.TextBox textBoxNotes;
         private System.Windows.Forms.ComboBox comboBoxPhotographer;
+        private System.Windows.Forms.DateTimePicker dtpDateTaken;
     }
 }

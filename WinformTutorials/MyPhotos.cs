@@ -435,5 +435,46 @@ namespace WinformTutorials
                 }
             }
         }
+
+        private void MyPhotos_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Add:
+                    e.IsInputKey = false;
+                    menuNext.PerformClick();
+                    break;
+
+                case Keys.Subtract:
+                    e.IsInputKey = false;
+                    menuPrevious.PerformClick();
+                    break;
+            }
+        }
+
+        private void MyPhotos_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.PageUp:
+                    e.Handled = true;
+                    menuNext.PerformClick();
+                    break;
+                case Keys.PageDown:
+                    e.Handled = true;
+                    menuPrevious.PerformClick();
+                    break;
+                case Keys.Home:
+                    e.Handled = true;
+                    _album.CurrentPosition = 0;
+                    Invalidate();
+                    break;
+                case Keys.End:
+                    e.Handled = true;
+                    _album.CurrentPosition = _album.Count - 1;
+                    Invalidate();
+                    break;
+            }
+        }
     }
 }

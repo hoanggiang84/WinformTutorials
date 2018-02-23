@@ -43,6 +43,7 @@
             this.menuRemove = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuPhotoProperties = new System.Windows.Forms.ToolStripMenuItem();
+            this.albumPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuView = new System.Windows.Forms.ToolStripMenuItem();
             this.menuImage = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStretch = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,7 +68,6 @@
             this.statusFileIndex = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusZoomFactor = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelImage = new System.Windows.Forms.Panel();
-            this.albumPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripMainMenu.SuspendLayout();
             this.contextMenuView.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -188,6 +188,13 @@
             this.menuPhotoProperties.Size = new System.Drawing.Size(175, 22);
             this.menuPhotoProperties.Text = "&Photo Properties...";
             this.menuPhotoProperties.Click += new System.EventHandler(this.menuPhotoPro_Click);
+            // 
+            // albumPropertiesToolStripMenuItem
+            // 
+            this.albumPropertiesToolStripMenuItem.Name = "albumPropertiesToolStripMenuItem";
+            this.albumPropertiesToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.albumPropertiesToolStripMenuItem.Text = "A&lbum Properties...";
+            this.albumPropertiesToolStripMenuItem.Click += new System.EventHandler(this.albumPropertiesToolStripMenuItem_Click);
             // 
             // menuView
             // 
@@ -377,13 +384,6 @@
             this.panelImage.Paint += new System.Windows.Forms.PaintEventHandler(this.panelImage_Paint);
             this.panelImage.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelImage_MouseMove);
             // 
-            // albumPropertiesToolStripMenuItem
-            // 
-            this.albumPropertiesToolStripMenuItem.Name = "albumPropertiesToolStripMenuItem";
-            this.albumPropertiesToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.albumPropertiesToolStripMenuItem.Text = "A&lbum Properties...";
-            this.albumPropertiesToolStripMenuItem.Click += new System.EventHandler(this.albumPropertiesToolStripMenuItem_Click);
-            // 
             // MyPhotos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -395,6 +395,8 @@
             this.MainMenuStrip = this.menuStripMainMenu;
             this.Name = "MyPhotos";
             this.Text = "My Photo";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MyPhotos_KeyDown);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.MyPhotos_PreviewKeyDown);
             this.Resize += new System.EventHandler(this.MyPhotos_Resize);
             this.menuStripMainMenu.ResumeLayout(false);
             this.menuStripMainMenu.PerformLayout();

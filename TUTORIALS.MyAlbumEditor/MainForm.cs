@@ -62,7 +62,15 @@ namespace TUTORIALS.MyAlbumEditor
             CloseAlbum();
             _album.Open(fileName);
             Text = _album.FileName;
-            UpdateList();
+            UpdatePhotographs();
+        }
+
+        private void UpdatePhotographs()
+        {
+            if(tabControlPhotos.SelectedTab == tabPagePhotos)
+                UpdateList();
+            else
+                UpdateCalender();
         }
 
         private void UpdateList()
@@ -87,18 +95,10 @@ namespace TUTORIALS.MyAlbumEditor
 
         private void buttonPhotoProperties_Click(object sender, EventArgs e)
         {
-            if (_album.Count == 0) return;
+            if (_album.Count == 0 || listBoxPhotos.SelectedIndex < 0) return;
 
-            if (listBoxPhotos.SelectedIndex >= 0)
-                _album.CurrentPosition = listBoxPhotos.SelectedIndex;
-
-            using (var dlg = new PhotoEditDlg(_album))
-            {
-                if(dlg.ShowDialog()==DialogResult.OK)
-                {
-                    UpdateList();
-                }
-            }
+            if (DisplayPhotoEditDlg(listBoxPhotos.SelectedIndex))
+                UpdateList();
         }
 
         private void listBoxPhotos_DoubleClick(object sender, EventArgs e)
@@ -181,6 +181,7 @@ namespace TUTORIALS.MyAlbumEditor
             {
                 CloseAlbum();
                 OpenAlbum(albumPath);
+                tabControlPhotos.Enabled = true;
                 buttonAlbumProperties.Enabled = true;
                 listBoxPhotos.BackColor = SystemColors.Window;
             }
@@ -189,6 +190,8 @@ namespace TUTORIALS.MyAlbumEditor
                 Text = "Unable to open selected album";
                 listBoxPhotos.Items.Clear();
                 listBoxPhotos.BackColor = SystemColors.Control;
+                tabControlPhotos.Enabled = false;
+                monthCalendarPhotoDate.RemoveAllBoldedDates();
                 buttonAlbumProperties.Enabled = false;
             }
         }
@@ -289,6 +292,76 @@ namespace TUTORIALS.MyAlbumEditor
             imagesDlg.ResumeLayout();
             imagesDlg.ShowDialog();
             imagesDlg.Dispose();
+        }
+
+        private void UpdateCalender()
+        {
+            var minDate = DateTime.MaxValue;
+            var maxDate = DateTime.MinValue;
+
+            var dates = new DateTime[_album.Count];
+            for (int i = 0; i < _album.Count; i++)
+            {
+                var newDate = _album[i].DateTaken;
+                dates[i] = newDate;
+                if (newDate < minDate)
+                    minDate = newDate;
+
+                if (newDate > maxDate)
+                    maxDate = newDate;
+            }
+
+            if(_album.Count>0)
+            {
+                monthCalendarPhotoDate.BoldedDates = dates;
+                monthCalendarPhotoDate.MinDate = minDate;
+                monthCalendarPhotoDate.MaxDate = maxDate;
+                monthCalendarPhotoDate.SelectionStart = minDate;
+            }
+        }
+
+        private void tabControlPhotos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePhotographs();
+        }
+
+        private void monthCalendarPhotoDate_MouseDown(object sender, MouseEventArgs e)
+        {
+            var info = monthCalendarPhotoDate.HitTest(e.X, e.Y);
+            if(info.HitArea == MonthCalendar.HitArea.Date)
+            {
+                var photoMenu = new ContextMenuStrip();
+                for (int i = 0; i < _album.Count; i++)
+                {
+                    if(_album[i].DateTaken.Date == info.Time.Date)
+                    {
+                        var newPhotoItem = new ToolStripMenuItem()
+                                               {
+                                                   Tag = 1,
+                                                   Text = _album[i].FileName
+                                               };
+                        newPhotoItem.Click += newPhotoItem_Click;
+                        photoMenu.Items.Add(newPhotoItem);
+                    }
+                }
+
+                if(photoMenu.Items.Count>=1)
+                    photoMenu.Show(monthCalendarPhotoDate, new Point(e.X,e.Y));
+            }
+        }
+
+        private void newPhotoItem_Click(object sender, EventArgs e)
+        {
+            var mi = sender as ToolStripMenuItem;
+            if (mi != null && DisplayPhotoEditDlg((int)mi.Tag))
+                UpdateCalender();
+        }
+
+        private bool DisplayPhotoEditDlg(int index)
+        {
+            _album.CurrentPosition = index;
+            using (var dlg = new PhotoEditDlg(_album))
+                return (dlg.ShowDialog() == DialogResult.OK);
         }
     }
 }

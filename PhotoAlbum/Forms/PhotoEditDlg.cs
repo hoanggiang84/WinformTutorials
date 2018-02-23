@@ -47,7 +47,7 @@ namespace TUTORIALS.Library.Forms
             {
                 textBoxPhotoFile.Text = photo.FileName;
                 textBoxCaption.Text = photo.Caption;
-                textBoxDateTaken.Text = photo.DateTaken.ToString();
+                dtpDateTaken.Value = photo.DateTaken;
                 textBoxNotes.Text = photo.Notes;
                 comboBoxPhotographer.SelectedItem = photo.Photographer;
             }
@@ -63,6 +63,7 @@ namespace TUTORIALS.Library.Forms
                 photo.Caption = textBoxCaption.Text;
                 photo.Photographer = comboBoxPhotographer.Text;
                 photo.Notes = textBoxNotes.Text;
+                photo.DateTaken = dtpDateTaken.Value;
                 _album.SetAlbumChanged();
             }
             return true;
