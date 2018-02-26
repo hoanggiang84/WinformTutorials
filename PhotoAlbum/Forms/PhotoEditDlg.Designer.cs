@@ -39,6 +39,8 @@
             this.dtpDateTaken = new System.Windows.Forms.DateTimePicker();
             this.labelNotes = new System.Windows.Forms.Label();
             this.textBoxNotes = new System.Windows.Forms.TextBox();
+            this.buttonNext = new System.Windows.Forms.Button();
+            this.buttonPrevious = new System.Windows.Forms.Button();
             this.panelInfo.SuspendLayout();
             this.tableLayoutPanelInfo.SuspendLayout();
             this.SuspendLayout();
@@ -161,7 +163,7 @@
             // labelNotes
             // 
             this.labelNotes.AutoSize = true;
-            this.labelNotes.Location = new System.Drawing.Point(6, 133);
+            this.labelNotes.Location = new System.Drawing.Point(6, 156);
             this.labelNotes.Name = "labelNotes";
             this.labelNotes.Size = new System.Drawing.Size(38, 13);
             this.labelNotes.TabIndex = 4;
@@ -170,17 +172,39 @@
             // textBoxNotes
             // 
             this.textBoxNotes.AcceptsReturn = true;
-            this.textBoxNotes.Location = new System.Drawing.Point(9, 149);
+            this.textBoxNotes.Location = new System.Drawing.Point(9, 172);
             this.textBoxNotes.Multiline = true;
             this.textBoxNotes.Name = "textBoxNotes";
             this.textBoxNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxNotes.Size = new System.Drawing.Size(263, 84);
+            this.textBoxNotes.Size = new System.Drawing.Size(263, 61);
             this.textBoxNotes.TabIndex = 5;
+            // 
+            // buttonNext
+            // 
+            this.buttonNext.Location = new System.Drawing.Point(210, 122);
+            this.buttonNext.Name = "buttonNext";
+            this.buttonNext.Size = new System.Drawing.Size(70, 25);
+            this.buttonNext.TabIndex = 6;
+            this.buttonNext.Text = "N&ext";
+            this.buttonNext.UseVisualStyleBackColor = true;
+            this.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            // 
+            // buttonPrevious
+            // 
+            this.buttonPrevious.Location = new System.Drawing.Point(134, 122);
+            this.buttonPrevious.Name = "buttonPrevious";
+            this.buttonPrevious.Size = new System.Drawing.Size(70, 25);
+            this.buttonPrevious.TabIndex = 7;
+            this.buttonPrevious.Text = "Pre&v";
+            this.buttonPrevious.UseVisualStyleBackColor = true;
+            this.buttonPrevious.Click += new System.EventHandler(this.buttonPrev_Click);
             // 
             // PhotoEditDlg
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.ClientSize = new System.Drawing.Size(284, 282);
+            this.Controls.Add(this.buttonPrevious);
+            this.Controls.Add(this.buttonNext);
             this.Controls.Add(this.textBoxNotes);
             this.Controls.Add(this.labelNotes);
             this.Name = "PhotoEditDlg";
@@ -189,6 +213,8 @@
             this.Controls.SetChildIndex(this.panelInfo, 0);
             this.Controls.SetChildIndex(this.labelNotes, 0);
             this.Controls.SetChildIndex(this.textBoxNotes, 0);
+            this.Controls.SetChildIndex(this.buttonNext, 0);
+            this.Controls.SetChildIndex(this.buttonPrevious, 0);
             this.panelInfo.ResumeLayout(false);
             this.tableLayoutPanelInfo.ResumeLayout(false);
             this.tableLayoutPanelInfo.PerformLayout();
@@ -210,5 +236,7 @@
         private System.Windows.Forms.TextBox textBoxNotes;
         private System.Windows.Forms.ComboBox comboBoxPhotographer;
         private System.Windows.Forms.DateTimePicker dtpDateTaken;
+        private System.Windows.Forms.Button buttonNext;
+        private System.Windows.Forms.Button buttonPrevious;
     }
 }

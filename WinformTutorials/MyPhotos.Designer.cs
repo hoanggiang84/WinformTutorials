@@ -382,6 +382,7 @@
             this.panelImage.Size = new System.Drawing.Size(396, 307);
             this.panelImage.TabIndex = 3;
             this.panelImage.Paint += new System.Windows.Forms.PaintEventHandler(this.panelImage_Paint);
+            this.panelImage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelImage_MouseDown);
             this.panelImage.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelImage_MouseMove);
             // 
             // MyPhotos
@@ -395,7 +396,9 @@
             this.MainMenuStrip = this.menuStripMainMenu;
             this.Name = "MyPhotos";
             this.Text = "My Photo";
+            this.Deactivate += new System.EventHandler(this.MyPhotos_Deactivate);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MyPhotos_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MyPhotos_KeyUp);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.MyPhotos_PreviewKeyDown);
             this.Resize += new System.EventHandler(this.MyPhotos_Resize);
             this.menuStripMainMenu.ResumeLayout(false);

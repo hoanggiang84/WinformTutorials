@@ -287,7 +287,9 @@ namespace WinformTutorials
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                panelImage.ContextMenuStrip = contextMenuView;
+
+                if(!ctrlKeyHeld)
+                    panelImage.ContextMenuStrip = contextMenuView;
             }
             else
             {
@@ -474,7 +476,52 @@ namespace WinformTutorials
                     _album.CurrentPosition = _album.Count - 1;
                     Invalidate();
                     break;
+                case Keys.ControlKey:
+                    ctrlKeyHeld = true;
+                    panelImage.Cursor = Cursors.SizeWE;
+                    panelImage.ContextMenuStrip = null;
+                    break;
             }
+        }
+
+        private bool ctrlKeyHeld;
+        private void panelImage_MouseDown(object sender, MouseEventArgs e)
+        {
+            if(ctrlKeyHeld)
+            {
+                switch (e.Button)
+                {
+                    case MouseButtons.Left:
+                        menuPrevious.PerformClick();
+                        break;
+                    case MouseButtons.Right:
+                        menuNext.PerformClick();
+                        break;
+                }
+            }
+        }
+
+        private void MyPhotos_KeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                    case Keys.ControlKey:
+                    ReleaseControlKey();
+                    break;
+            }
+        }
+
+        private void ReleaseControlKey()
+        {
+            ctrlKeyHeld = false;
+            panelImage.Cursor = Cursors.Default;
+            panelImage.ContextMenuStrip = contextMenuView;
+        }
+
+        private void MyPhotos_Deactivate(object sender, EventArgs e)
+        {
+            if(ctrlKeyHeld)
+                ReleaseControlKey();
         }
     }
 }

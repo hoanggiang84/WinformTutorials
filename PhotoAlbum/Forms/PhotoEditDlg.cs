@@ -19,6 +19,7 @@ namespace TUTORIALS.Library.Forms
             InitializeComponent();
 
             _album = album;
+            _index = album.CurrentPosition;
             ResetSettings();
         }
 
@@ -42,7 +43,7 @@ namespace TUTORIALS.Library.Forms
                 comboBoxPhotographer.EndUpdate();
             }
 
-            var photo = _album.CurrentPhoto;
+            var photo = _album[_index];
             if(photo!=null)
             {
                 textBoxPhotoFile.Text = photo.FileName;
@@ -50,6 +51,8 @@ namespace TUTORIALS.Library.Forms
                 dtpDateTaken.Value = photo.DateTaken;
                 textBoxNotes.Text = photo.Notes;
                 comboBoxPhotographer.SelectedItem = photo.Photographer;
+                buttonPrevious.Enabled = _index > 0;
+                buttonNext.Enabled = (_index < _album.Count - 1);
             }
 
             base.ResetSettings();
@@ -57,7 +60,7 @@ namespace TUTORIALS.Library.Forms
 
         protected override bool SaveSettings()
         {
-            var photo = _album.CurrentPhoto;
+            var photo = _album[_index];
             if(photo!=null)
             {
                 photo.Caption = textBoxCaption.Text;
@@ -85,7 +88,7 @@ namespace TUTORIALS.Library.Forms
             var pg = comboBoxPhotographer.Text;
             if(!comboBoxPhotographer.Items.Contains(pg))
             {
-                _album.CurrentPhoto.Photographer = pg;
+                _album[_index].Photographer = pg;
                 comboBoxPhotographer.Items.Add(pg);
             }
             comboBoxPhotographer.SelectedItem = pg;
@@ -110,6 +113,18 @@ namespace TUTORIALS.Library.Forms
         {
             var c = e.KeyChar;
             e.Handled = !(char.IsWhiteSpace(c) || char.IsLetterOrDigit(c) || char.IsControl(c));
+        }
+
+
+        private int _index;
+        private void buttonPrev_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonNext_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
