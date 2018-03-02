@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using TUTORIALS.Library;
-using TUTORIALS.Library.Forms;
 
 namespace TUTORIALS.Library.Forms
 {
     public partial class PhotoEditDlg : BaseEditDlg
     {
         private PhotoAlbum _album;
+        private int _index;
+        private string _origCaption;
+        private DateTime _origDateTaken;
+        private string _origPhotographer;
+        private bool _modifiedTxtNotes;
 
         public PhotoEditDlg(PhotoAlbum album)
         {
@@ -21,6 +19,20 @@ namespace TUTORIALS.Library.Forms
             _album = album;
             _index = album.CurrentPosition;
             ResetSettings();
+            SetOriginals();
+        }
+
+        private void SetOriginals()
+        {
+            var photo = _album[_index];
+
+            if(photo != null)
+            {
+                _origCaption = photo.Caption;
+                _origDateTaken = photo.DateTaken;
+                _origPhotographer = photo.Photographer;
+                _modifiedTxtNotes = false;
+            }
         }
 
         protected override void ResetSettings()
@@ -46,11 +58,12 @@ namespace TUTORIALS.Library.Forms
             var photo = _album[_index];
             if(photo!=null)
             {
+                comboBoxPhotographer.SelectedItem = photo.Photographer;
+                comboBoxPhotographer.DroppedDown = false;
                 textBoxPhotoFile.Text = photo.FileName;
                 textBoxCaption.Text = photo.Caption;
                 dtpDateTaken.Value = photo.DateTaken;
                 textBoxNotes.Text = photo.Notes;
-                comboBoxPhotographer.SelectedItem = photo.Photographer;
                 buttonPrevious.Enabled = _index > 0;
                 buttonNext.Enabled = (_index < _album.Count - 1);
             }
@@ -60,16 +73,27 @@ namespace TUTORIALS.Library.Forms
 
         protected override bool SaveSettings()
         {
-            var photo = _album[_index];
-            if(photo!=null)
+            if(NewControlValues())
             {
-                photo.Caption = textBoxCaption.Text;
-                photo.Photographer = comboBoxPhotographer.Text;
-                photo.Notes = textBoxNotes.Text;
-                photo.DateTaken = dtpDateTaken.Value;
-                _album.SetAlbumChanged();
+                var photo = _album[_index];
+                if (photo != null)
+                {
+                    photo.Caption = textBoxCaption.Text;
+                    photo.Photographer = comboBoxPhotographer.Text;
+                    photo.Notes = textBoxNotes.Text;
+                    photo.DateTaken = dtpDateTaken.Value;
+                    _album.SetAlbumChanged();
+                }
             }
             return true;
+        }
+
+        private bool NewControlValues()
+        {
+            return (_origCaption != textBoxCaption.Text
+                    || _origDateTaken != dtpDateTaken.Value
+                    || _origPhotographer != comboBoxPhotographer.Text
+                    || _modifiedTxtNotes);
         }
 
         private void textBoxCaption_KeyPress(object sender, KeyPressEventArgs e)
@@ -115,16 +139,26 @@ namespace TUTORIALS.Library.Forms
             e.Handled = !(char.IsWhiteSpace(c) || char.IsLetterOrDigit(c) || char.IsControl(c));
         }
 
-
-        private int _index;
         private void buttonPrev_Click(object sender, EventArgs e)
         {
-
+            SaveSettings();
+            if (_index > 0)
+            {
+                _index--;
+                ResetSettings();
+                SetOriginals();
+            }
         }
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
-
+            SaveSettings();
+            if(_index<_album.Count-1)
+            {
+                _index++;
+                ResetSettings();
+                SetOriginals();
+            }
         }
     }
 }
