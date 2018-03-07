@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanelInfo = new System.Windows.Forms.TableLayoutPanel();
             this.textBoxCaption = new System.Windows.Forms.TextBox();
             this.labelPhotoFile = new System.Windows.Forms.Label();
@@ -41,6 +42,7 @@
             this.textBoxNotes = new System.Windows.Forms.TextBox();
             this.buttonNext = new System.Windows.Forms.Button();
             this.buttonPrevious = new System.Windows.Forms.Button();
+            this.toolTipPhotos = new System.Windows.Forms.ToolTip(this.components);
             this.panelInfo.SuspendLayout();
             this.tableLayoutPanelInfo.SuspendLayout();
             this.SuspendLayout();
@@ -80,6 +82,7 @@
             this.textBoxCaption.Name = "textBoxCaption";
             this.textBoxCaption.Size = new System.Drawing.Size(144, 20);
             this.textBoxCaption.TabIndex = 3;
+            this.toolTipPhotos.SetToolTip(this.textBoxCaption, "Short caption for photo");
             this.textBoxCaption.TextChanged += new System.EventHandler(this.textBoxCaption_TextChanged);
             this.textBoxCaption.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCaption_KeyPress);
             // 
@@ -135,6 +138,7 @@
             this.textBoxPhotoFile.ReadOnly = true;
             this.textBoxPhotoFile.Size = new System.Drawing.Size(144, 20);
             this.textBoxPhotoFile.TabIndex = 1;
+            this.toolTipPhotos.SetToolTip(this.textBoxPhotoFile, "Image file containing photo");
             // 
             // comboBoxPhotographer
             // 
@@ -146,6 +150,7 @@
             this.comboBoxPhotographer.Size = new System.Drawing.Size(144, 21);
             this.comboBoxPhotographer.Sorted = true;
             this.comboBoxPhotographer.TabIndex = 7;
+            this.toolTipPhotos.SetToolTip(this.comboBoxPhotographer, "Person who took photo");
             this.comboBoxPhotographer.TextChanged += new System.EventHandler(this.comboBoxPhotographer_TextChanged);
             this.comboBoxPhotographer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxPhotographer_KeyPress);
             this.comboBoxPhotographer.Validated += new System.EventHandler(this.comboBoxPhotographer_Validated);
@@ -159,6 +164,7 @@
             this.dtpDateTaken.Name = "dtpDateTaken";
             this.dtpDateTaken.Size = new System.Drawing.Size(144, 20);
             this.dtpDateTaken.TabIndex = 8;
+            this.toolTipPhotos.SetToolTip(this.dtpDateTaken, "When photo was taken");
             // 
             // labelNotes
             // 
@@ -178,24 +184,34 @@
             this.textBoxNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxNotes.Size = new System.Drawing.Size(263, 61);
             this.textBoxNotes.TabIndex = 5;
+            this.toolTipPhotos.SetToolTip(this.textBoxNotes, "Details about this photo");
             // 
             // buttonNext
             // 
+            this.buttonNext.Image = global::TUTORIALS.Library.Properties.Resources.NextButton;
+            this.buttonNext.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonNext.Location = new System.Drawing.Point(210, 122);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(70, 25);
             this.buttonNext.TabIndex = 6;
             this.buttonNext.Text = "N&ext";
+            this.buttonNext.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTipPhotos.SetToolTip(this.buttonNext, "Next photo");
             this.buttonNext.UseVisualStyleBackColor = true;
             this.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
             // 
             // buttonPrevious
             // 
+            this.buttonPrevious.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonPrevious.Image = global::TUTORIALS.Library.Properties.Resources.PrevButton;
+            this.buttonPrevious.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonPrevious.Location = new System.Drawing.Point(134, 122);
             this.buttonPrevious.Name = "buttonPrevious";
             this.buttonPrevious.Size = new System.Drawing.Size(70, 25);
             this.buttonPrevious.TabIndex = 7;
             this.buttonPrevious.Text = "Pre&v";
+            this.buttonPrevious.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTipPhotos.SetToolTip(this.buttonPrevious, "Previous photo");
             this.buttonPrevious.UseVisualStyleBackColor = true;
             this.buttonPrevious.Click += new System.EventHandler(this.buttonPrev_Click);
             // 
@@ -238,5 +254,6 @@
         private System.Windows.Forms.DateTimePicker dtpDateTaken;
         private System.Windows.Forms.Button buttonNext;
         private System.Windows.Forms.Button buttonPrevious;
+        private System.Windows.Forms.ToolTip toolTipPhotos;
     }
 }

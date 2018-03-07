@@ -11,7 +11,7 @@ namespace WinformTutorials
     {
         protected PhotoAlbum _album = new PhotoAlbum();
         private DisplayMode _selectedMode = DisplayMode.ScaleToFit;
-        private PixelDlg _dlgPixel = new PixelDlg();
+        private PixelDlg _dlgPixel;
         private int _nPixelDlgIndex;
      
         private void SetTitleBar()
@@ -32,7 +32,19 @@ namespace WinformTutorials
         public MyPhotos()
         {
             InitializeComponent();
+            InitToolStripItems();
             menuNew_Click(this,EventArgs.Empty);
+        }
+
+        private void InitToolStripItems()
+        {
+            toolStripButtonNew.Tag = menuNew;
+            toolStripButtonOpen.Tag = menuOpen;
+            toolStripButtonSave.Tag = menuSave;
+
+            toolStripButtonPrevious.Tag = menuPrevious;
+            toolStripButtonNext.Tag = menuNext;
+
         }
 
         private void menuExit_Click(object sender, EventArgs e)
@@ -164,6 +176,9 @@ namespace WinformTutorials
                 statusImageSize.Text = string.Empty;
                 statusFileIndex.Text = string.Empty;
             }
+
+            if (toolStripButtonPixelData.Checked && !(_dlgPixel == null || _dlgPixel.IsDisposed))
+                toolStripButtonPixelData.Checked = false;
 
             statusStrip.Invalidate();
             panelImage.Invalidate();
@@ -523,5 +538,28 @@ namespace WinformTutorials
             if(ctrlKeyHeld)
                 ReleaseControlKey();
         }
+
+        private void toolStripMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var menuButton = e.ClickedItem.Tag as ToolStripMenuItem;
+            if(menuButton != null)
+                menuButton.PerformClick();
+        }
+
+        private void toolStripButtonPixelData_Click(object sender, EventArgs e)
+        {
+            if(toolStripButtonPixelData.Checked)
+            {
+                menuPixel.PerformClick();
+                toolStripButtonPixelData.Text = "Hide pixel data";
+            }
+            else
+            {
+                toolStripButtonPixelData.Text = "Show pixel data";
+                _dlgPixel.Close();
+            }
+        }
+
+
     }
 }

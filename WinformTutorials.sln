@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUTORIALS", "WinformTutorials\TUTORIALS.csproj", "{11039ECB-D2A7-46C0-96D9-BB24C057827E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUTORIALS.MyPhotos", "WinformTutorials\TUTORIALS.MyPhotos.csproj", "{11039ECB-D2A7-46C0-96D9-BB24C057827E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUTORIALS.Library", "PhotoAlbum\TUTORIALS.Library.csproj", "{DAAC68CA-E614-4A2E-A853-A956C436BDA6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUTORIALS.UnitTests", "TUTORIALS.UnitTests\TUTORIALS.UnitTests.csproj", "{E6520A25-84EB-4978-9BD5-5EDA4A37DD73}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUTORIALS.MyAlbumEditor", "TUTORIALS.MyAlbumEditor\TUTORIALS.MyAlbumEditor.csproj", "{5EBDE8EA-B9C1-4E0C-AE20-2C9BDA896E3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUTORIALS.MyAlbumExplorer", "TUTORIALS.MyAlbumExplorer\TUTORIALS.MyAlbumExplorer.csproj", "{FBCC9710-B632-4FFF-8544-4FB5B0D160E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{5EBDE8EA-B9C1-4E0C-AE20-2C9BDA896E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EBDE8EA-B9C1-4E0C-AE20-2C9BDA896E3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EBDE8EA-B9C1-4E0C-AE20-2C9BDA896E3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBCC9710-B632-4FFF-8544-4FB5B0D160E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBCC9710-B632-4FFF-8544-4FB5B0D160E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBCC9710-B632-4FFF-8544-4FB5B0D160E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBCC9710-B632-4FFF-8544-4FB5B0D160E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
