@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using TUTORIALS.Library;
@@ -25,13 +26,18 @@ namespace TUTORIALS.MyAlbumExplorer
 
     public partial class MainForm : Form
     {
+        // Acording to imageLists
         private const int PhotoIndex = 0;
         private const int AlbumIndex = 1;
         private const int ErrorIndex = 2;
+        private const int SelectedPhotoIndex = 5;
+        private const int AlbumDirectoryIndex = 4;
+        private const int SelectedAlbumIndex = 3;
 
         private MyListViewComparer _comparer;
         private bool _albumShown = true;
         private PhotoAlbum _album;
+        private static Pen borderPen = new Pen(SystemColors.WindowFrame);
 
         public MainForm()
         {
@@ -48,6 +54,26 @@ namespace TUTORIALS.MyAlbumExplorer
             listViewMain.Sorting = SortOrder.Ascending;
 
             LoadAlbumData(PhotoAlbum.DefaultDir);
+            InitTreeData();
+        }
+
+        private void InitTreeData()
+        {
+            treeViewMain.BeginUpdate();
+            treeViewMain.Nodes.Clear();
+
+            var defaultRoot = new TreeNode("Default Albums", AlbumDirectoryIndex, AlbumDirectoryIndex)
+                                  {Tag = PhotoAlbum.DefaultDir};
+            treeViewMain.Nodes.Add(defaultRoot);
+            treeViewMain.SelectedNode = defaultRoot;
+
+            foreach (var s in Directory.GetFiles(PhotoAlbum.DefaultDir,"*.abm"))
+            {
+                var baseName = Path.GetFileNameWithoutExtension(s);
+                var albumNode = new TreeNode(baseName, new[] {new TreeNode("child")}) {Tag = s};
+                defaultRoot.Nodes.Add(albumNode);
+            }
+            treeViewMain.EndUpdate();
         }
 
         private void LoadAlbumData(string dir)
@@ -166,22 +192,50 @@ namespace TUTORIALS.MyAlbumExplorer
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(listViewMain.SelectedItems.Count<=0)
-                return;
+            if (treeViewMain.Focused)
+            {
+                var node = treeViewMain.SelectedNode;
+                var file = node.Tag as string;
+                if(node == null || node.Parent == null || file == null)
+                    return;
+                
+                if(Path.GetExtension(file) == ".abm")
+                    DisplayAlbumProperties(node);
+                else
+                    DisplayPhotoProperties(node);
+            }
+            else if (pictureBoxMain.Focused)
+            {
+                var node = treeViewMain.SelectedNode;
+                if(node!= null)
+                    DisplayPhotoProperties(node);
+            }
+            else if(listViewMain.SelectedItems.Count>0)
+            {
+                var item = listViewMain.SelectedItems[0];
 
-            var item = listViewMain.SelectedItems[0];
-
-            if (_albumShown)
-                DisplayAlbumProperties(item);
-            else DisplayPhotoProperties(item);
+                if (_albumShown)
+                    DisplayAlbumProperties(item);
+                else
+                    DisplayPhotoProperties(item);
+            }
         }
 
-        private void DisplayPhotoProperties(ListViewItem item)
+        private void DisplayPhotoProperties(object obj)
         {
-            if (!(item.Tag is int))
-                return;
+            var item = obj as ListViewItem;
+            var node = obj as TreeNode;
 
-            var index = (int) item.Tag;
+            int index = 0;
+            if(item!=null && item.Tag is int)
+            {
+                index = (int)item.Tag;
+            }
+            else if(node != null)
+            {
+                index = node.Index;
+            }
+
             _album.CurrentPosition = index;
 
             using (var dlg = new PhotoEditDlg(_album))
@@ -198,17 +252,43 @@ namespace TUTORIALS.MyAlbumExplorer
                     }
                 }
 
-                LoadPhotoData(_album);
+                TreeNode baseNode = null;
+                if(item!=null)
+                {
+                    LoadPhotoData(_album);
+                    baseNode = treeViewMain.SelectedNode;
+                }
+                else if(node!=null)
+                {
+                    baseNode = node.Parent;
+                }
+
+                if(baseNode!= null)
+                {
+                    foreach (TreeNode n in baseNode.Nodes)
+                    {
+                        n.Text = _album[n.Index].Caption;
+                    }
+                }
             }
         }
 
-        private void DisplayAlbumProperties(ListViewItem item)
+        private void DisplayAlbumProperties(object obj)
         {
-            var fileName = item.Tag as string;
+            var item = obj as ListViewItem;
+            var node = obj as TreeNode;
 
             PhotoAlbum album = null;
-            if (!string.IsNullOrWhiteSpace(fileName))
-                album = OpenAlbum(fileName);
+            if(item!=null)
+            {
+                var fileName = item.Tag as string;
+                if (fileName != null)
+                    album = OpenAlbum(fileName);
+            }
+            else if(node!=null)
+            {
+                album = OpenTreeAlbum(node);
+            }
 
             if(album == null)
             {
@@ -230,8 +310,11 @@ namespace TUTORIALS.MyAlbumExplorer
                         return;
                     }
 
-                    item.SubItems[(int) AlbumColumn.Title].Text = album.Title;
-                    item.SubItems[(int) AlbumColumn.Password].Text = string.IsNullOrEmpty(album.Password) ? "n" : "y";
+                    if(item!=null)
+                    {
+                        item.SubItems[(int)AlbumColumn.Title].Text = album.Title;
+                        item.SubItems[(int)AlbumColumn.Password].Text = string.IsNullOrEmpty(album.Password) ? "n" : "y";
+                    }
                 }
             }
             album.Dispose();
@@ -239,7 +322,12 @@ namespace TUTORIALS.MyAlbumExplorer
 
         private void editNametoolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(listViewMain.SelectedItems.Count == 1)
+            if(treeViewMain.Focused)
+            {
+                if(treeViewMain.SelectedNode != null)
+                    treeViewMain.SelectedNode.BeginEdit();
+            }
+            else if(listViewMain.SelectedItems.Count > 1)
                 listViewMain.SelectedItems[0].BeginEdit();
         }
 
@@ -271,15 +359,35 @@ namespace TUTORIALS.MyAlbumExplorer
                 e.CancelEdit = !UpdatePhotoCaption(e.Label, item);
         }
 
-        private bool UpdatePhotoCaption(string caption, ListViewItem item)
+        private bool UpdatePhotoCaption(string caption, object obj)
         {
-            if(caption.Length == 0 || !(item.Tag is int))
+            var item = obj as ListViewItem;
+            var node = obj as TreeNode;
+
+            int index = -1;
+            if(item != null 
+                && item.Tag is int)
+            {
+                index = (int) item.Tag;
+                node = FindNode(_album[index].FileName, false);
+            }
+            else if(node!=null)
+            {
+                index = node.Index;
+            }
+
+            if(caption.Length == 0 || index < 0)
             {
                 MessageBox.Show("Invalid caption value.");
                 return false;
             }
 
-            _album[(int) item.Tag].Caption = caption;
+            _album[index].Caption = caption;
+
+            if(item != null && node != null)
+            {
+                node.Text = caption;
+            }
 
             try
             {
@@ -306,6 +414,20 @@ namespace TUTORIALS.MyAlbumExplorer
             return true;
         }
 
+        private bool UpdateAlbumName(string newName, TreeNode node)
+        {
+            var fileName = node.Tag as string;
+            var newFileName = RenameFile(fileName, newName, ".abm");
+            if (newFileName == null)
+            {
+                MessageBox.Show("Unable to rename album to this name.");
+                return false;
+            }
+            node.Tag = newFileName;
+            return true;
+
+        }
+
         private string RenameFile(string origFile, string newBase, string ext)
         {
             var fileName = Path.GetDirectoryName(origFile) + "\\" + newBase;
@@ -323,21 +445,33 @@ namespace TUTORIALS.MyAlbumExplorer
 
         private void listViewMain_ItemActivate(object sender, EventArgs e)
         {
-            if(_albumShown && listViewMain.SelectedItems.Count>0)
+            if(listViewMain.SelectedItems.Count > 0)
             {
                 var item = listViewMain.SelectedItems[0];
                 var fileName = item.Tag as string;
 
-                PhotoAlbum album;
-                if (!string.IsNullOrEmpty(fileName))
-                    album = OpenAlbum(fileName);
-                else
+                if(_albumShown)
                 {
-                    MessageBox.Show("The photographs for this album cannot be displayed.");
+                    fileName = item.Tag as string;
+                }
+                else if(item.Tag is int)
+                {
+                    var index = (int) item.Tag;
+                    fileName = _album[index].FileName;
+                }
+
+                if(fileName == null)
+                {
+                    MessageBox.Show("This item cannot be opened.");
                     return;
                 }
 
-                LoadPhotoData(album);
+                var node = FindNode(fileName, true);
+                if(node!=null)
+                {
+                    node.EnsureVisible();
+                    treeViewMain.SelectedNode = node;
+                }
             }
         }
 
@@ -376,17 +510,23 @@ namespace TUTORIALS.MyAlbumExplorer
 
         private void editToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
-            var oneSelected = (listViewMain.SelectedItems.Count == 1);
-            editNametoolStripMenuItem.Enabled = oneSelected;
-            propertiesToolStripMenuItem.Enabled = oneSelected;
-            editNametoolStripMenuItem.Text = _albumShown ? "&Name" : "&Caption";
+            if(treeViewMain.Focused)
+            {
+                editNametoolStripMenuItem.Enabled = (treeViewMain.SelectedNode != null);
+                editNametoolStripMenuItem.Text = "&Node";
+            }
+            else
+            {
+                editNametoolStripMenuItem.Enabled = listViewMain.SelectedItems.Count > 0;
+                editNametoolStripMenuItem.Text = _albumShown ? "&Name" : "&Caption";
+            }
         }
 
         private void albumsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(!_albumShown)
+            if(treeViewMain.Nodes.Count>0)
             {
-                LoadAlbumData(PhotoAlbum.DefaultDir);
+                treeViewMain.SelectedNode = treeViewMain.Nodes[0];
             }
         }
 
@@ -395,11 +535,176 @@ namespace TUTORIALS.MyAlbumExplorer
             listViewMain_ItemActivate(sender, e);
         }
 
-        private void photosToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        private void treeViewMain_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            var v = listViewMain.View;
-         
+            var node = e.Node;
+            var s = node.Tag as string;
+            if(s== null || (Path.GetExtension(s)!=".abm"))
+            {
+                return;
+            }
+
+            node.Nodes.Clear();
+            using (PhotoAlbum album = OpenTreeAlbum(node))
+            {
+                if(album == null || album.Count == 0)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+                treeViewMain.BeginUpdate();
+                foreach (Photograph p in album)
+                {
+                    var newNode = new TreeNode(album.GetDisplayText(p), PhotoIndex, SelectedPhotoIndex)
+                                      {Tag = p.FileName};
+                    node.Nodes.Add(newNode);
+                }
+                treeViewMain.EndUpdate();
+            }
         }
+
+        private PhotoAlbum OpenTreeAlbum(TreeNode node)
+        {
+            var s = node.Tag as string;
+            var album = OpenAlbum(s);
+            if(album==null)
+            {
+                node.ImageIndex = ErrorIndex;
+                node.SelectedImageIndex = ErrorIndex;
+            }
+            else
+            {
+                node.ImageIndex = AlbumIndex;
+                node.SelectedImageIndex = SelectedAlbumIndex;
+            }
+            return album;
+        }
+
+        private void treeViewMain_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            var node = e.Node;
+            var fileName = node.Tag as string;
+
+            if(fileName==null)
+                throw new ApplicationException("selected tree node has invalid tag");
+
+            if(node.Parent == null)
+            {
+                LoadAlbumData(fileName);
+                DisplayPhoto(null);
+            }
+            else if(Path.GetExtension(fileName)==".abm")
+            {
+                var album = OpenTreeAlbum(node);
+                LoadPhotoData(album);
+                DisplayPhoto(null);
+            }
+            else
+            {
+                listViewMain.Clear();
+                DisplayPhoto(node);
+            }
+        }
+
+        private TreeNode FindNode(string fileName, bool expandNode)
+        {
+            var node = treeViewMain.SelectedNode;
+            if (node == null)
+                return null;
+
+            if(expandNode)
+                node.Expand();
+
+            foreach (TreeNode n in node.Nodes)
+            {
+                var nodePath = n.Tag as string;
+                if(nodePath == fileName)
+                {
+                    return n;
+                }
+            }
+
+            return null;
+        }
+
+        private void DisplayPhoto(TreeNode node)
+        {
+            if(node == null)
+            {
+                pictureBoxMain.Visible = false;
+                listViewMain.Visible = true;
+                return;
+            }
+
+            var file = node.Parent.Tag as string;
+            if(_album == null 
+                ||(_album.FileName != file))
+            {
+                if(_album != null)
+                    _album.Dispose();
+
+                _album = OpenTreeAlbum(node.Parent);
+            }
+
+            if(_album != null)
+            {
+                pictureBoxMain.Tag = _album[node.Index];
+                pictureBoxMain.Invalidate();
+                pictureBoxMain.Visible = true;
+                listViewMain.Visible = false;
+            }
+        }
+
+        private void pictureBoxMain_Paint(object sender, PaintEventArgs e)
+        {
+            var photo = pictureBoxMain.Tag as Photograph;
+            if(photo == null)
+            {
+                e.Graphics.Clear(pictureBoxMain.BackColor);
+                return;
+            }
+
+            var rect = photo.ScaleToFit(pictureBoxMain.ClientRectangle);
+            e.Graphics.DrawImage(photo.Image, rect);
+            e.Graphics.DrawRectangle(borderPen, rect);
+        }
+
+        private void pictureBoxMain_Resize(object sender, EventArgs e)
+        {
+            pictureBoxMain.Invalidate();
+        }
+
+        private void treeViewMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.F2)
+            {
+                if(treeViewMain.SelectedNode != null)
+                {
+                    treeViewMain.SelectedNode.BeginEdit();
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void treeViewMain_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+        {
+            if(e.Label == null)
+            {
+                e.CancelEdit = true;
+                return;
+            }
+
+            if(e.Node.Parent == null)
+                return;
+
+            var fileName = e.Node.Tag as string;
+            if (Path.GetExtension(fileName) == ".abm")
+                e.CancelEdit = !UpdateAlbumName(e.Label, e.Node);
+            else
+                e.CancelEdit = !UpdatePhotoCaption(e.Label, e.Node);
+        }
+
     }
 
     internal class MyListViewComparer:IComparer

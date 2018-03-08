@@ -351,5 +351,10 @@ namespace TUTORIALS.Library
             }
         }
 
+        public string GetDisplayText(Photograph photograph)
+        {
+            return photograph.GetDisplayText(_displayOption);
+        }
+
     }
 }
