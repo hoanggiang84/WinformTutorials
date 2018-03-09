@@ -34,7 +34,6 @@
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuNew = new System.Windows.Forms.ToolStripMenuItem();
             this.menuOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuSave = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -83,6 +82,7 @@
             this.actualSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonPixelData = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStripMainMenu.SuspendLayout();
             this.contextMenuView.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -100,6 +100,7 @@
             this.menuStripMainMenu.Size = new System.Drawing.Size(396, 24);
             this.menuStripMainMenu.TabIndex = 0;
             this.menuStripMainMenu.Text = "MainMenu";
+            this.menuStripMainMenu.Visible = false;
             // 
             // menuFile
             // 
@@ -111,14 +112,14 @@
             this.menuSaveAs,
             this.toolStripSeparator2,
             this.menuExit});
-            this.menuFile.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.menuFile.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
             this.menuFile.Name = "menuFile";
             this.menuFile.Size = new System.Drawing.Size(37, 20);
             this.menuFile.Text = "&File";
             // 
             // menuNew
             // 
-            this.menuNew.MergeAction = System.Windows.Forms.MergeAction.Remove;
+            this.menuNew.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
             this.menuNew.MergeIndex = 0;
             this.menuNew.Name = "menuNew";
             this.menuNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
@@ -128,20 +129,13 @@
             // 
             // menuOpen
             // 
-            this.menuOpen.MergeAction = System.Windows.Forms.MergeAction.Remove;
+            this.menuOpen.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
             this.menuOpen.MergeIndex = 1;
             this.menuOpen.Name = "menuOpen";
             this.menuOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.menuOpen.Size = new System.Drawing.Size(152, 22);
             this.menuOpen.Text = "&Open";
             this.menuOpen.Click += new System.EventHandler(this.menuOpen_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator1.MergeIndex = 3;
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // menuSave
             // 
@@ -171,7 +165,7 @@
             // 
             // menuExit
             // 
-            this.menuExit.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.menuExit.MergeAction = System.Windows.Forms.MergeAction.Replace;
             this.menuExit.MergeIndex = 2;
             this.menuExit.Name = "menuExit";
             this.menuExit.Size = new System.Drawing.Size(152, 22);
@@ -406,13 +400,11 @@
             // 
             // panelImage
             // 
-            this.panelImage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelImage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panelImage.Location = new System.Drawing.Point(0, 52);
+            this.panelImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelImage.Location = new System.Drawing.Point(0, 24);
             this.panelImage.Name = "panelImage";
-            this.panelImage.Size = new System.Drawing.Size(396, 279);
+            this.panelImage.Size = new System.Drawing.Size(396, 307);
             this.panelImage.TabIndex = 3;
             this.panelImage.Paint += new System.Windows.Forms.PaintEventHandler(this.panelImage_Paint);
             this.panelImage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelImage_MouseDown);
@@ -420,7 +412,6 @@
             // 
             // toolStripMain
             // 
-            this.toolStripMain.Dock = System.Windows.Forms.DockStyle.None;
             this.toolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonNew,
             this.toolStripButtonOpen,
@@ -432,10 +423,11 @@
             this.toolStripDropDownButtonImages,
             this.toolStripSeparator9,
             this.toolStripButtonPixelData});
-            this.toolStripMain.Location = new System.Drawing.Point(0, 24);
+            this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
-            this.toolStripMain.Size = new System.Drawing.Size(197, 25);
+            this.toolStripMain.Size = new System.Drawing.Size(396, 25);
             this.toolStripMain.TabIndex = 4;
+            this.toolStripMain.Visible = false;
             this.toolStripMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStripMain_ItemClicked);
             // 
             // toolStripButtonNew
@@ -509,19 +501,19 @@
             // scaleToFitToolStripMenuItem
             // 
             this.scaleToFitToolStripMenuItem.Name = "scaleToFitToolStripMenuItem";
-            this.scaleToFitToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.scaleToFitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.scaleToFitToolStripMenuItem.Text = "&Scale to Fit";
             // 
             // stretchToFitToolStripMenuItem
             // 
             this.stretchToFitToolStripMenuItem.Name = "stretchToFitToolStripMenuItem";
-            this.stretchToFitToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.stretchToFitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.stretchToFitToolStripMenuItem.Text = "S&tretch to Fit";
             // 
             // actualSizeToolStripMenuItem
             // 
             this.actualSizeToolStripMenuItem.Name = "actualSizeToolStripMenuItem";
-            this.actualSizeToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.actualSizeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.actualSizeToolStripMenuItem.Text = "&Actual Size";
             // 
             // toolStripSeparator9
@@ -540,6 +532,13 @@
             this.toolStripButtonPixelData.Text = "Show pixel data";
             this.toolStripButtonPixelData.Click += new System.EventHandler(this.toolStripButtonPixelData_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripSeparator1.MergeIndex = 3;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            // 
             // MyPhotos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -554,6 +553,7 @@
             this.Name = "MyPhotos";
             this.Text = "My Photo";
             this.Deactivate += new System.EventHandler(this.MyPhotos_Deactivate);
+            this.Load += new System.EventHandler(this.MyPhotos_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MyPhotos_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MyPhotos_KeyUp);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.MyPhotos_PreviewKeyDown);
@@ -574,7 +574,6 @@
 
         private System.Windows.Forms.MenuStrip menuStripMainMenu;
         private System.Windows.Forms.ToolStripMenuItem menuFile;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuExit;
         private System.Windows.Forms.ToolStripMenuItem menuView;
         private System.Windows.Forms.ToolStripMenuItem menuImage;
@@ -611,7 +610,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem menuPixel;
         private System.Windows.Forms.ToolStripMenuItem albumPropertiesToolStripMenuItem;
-        private System.Windows.Forms.ToolStrip toolStripMain;
         private System.Windows.Forms.ToolStripButton toolStripButtonNew;
         private System.Windows.Forms.ToolStripButton toolStripButtonOpen;
         private System.Windows.Forms.ToolStripButton toolStripButtonSave;
@@ -625,6 +623,8 @@
         private System.Windows.Forms.ToolStripMenuItem scaleToFitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stretchToFitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem actualSizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        public System.Windows.Forms.ToolStrip toolStripMain;
 
 
     }

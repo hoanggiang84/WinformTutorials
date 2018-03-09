@@ -366,20 +366,22 @@ namespace WinformTutorials
 
         private void menuPixel_Click(object sender, EventArgs e)
         {
-            if(_dlgPixel == null || _dlgPixel.IsDisposed)
-                _dlgPixel = new PixelDlg {Owner = this};
+            if (_dlgPixel == null || _dlgPixel.IsDisposed)
+                _dlgPixel = PixelDlg.GlobalDialog;
 
             _nPixelDlgIndex = _album.CurrentPosition;
             var p = panelImage.PointToClient(MousePosition);
             UpdatePixelData(p.X, p.Y);
             _dlgPixel.Show();
-
         }
 
         private void UpdatePixelData(int x, int y)
         {
             if(_dlgPixel == null || !_dlgPixel.Visible)
                 return;
+
+            if (IsMdiChild)
+                _dlgPixel = PixelDlg.GlobalDialog;
 
             var photo = _album.CurrentPhoto;
             _dlgPixel.Text = photo.Caption;
@@ -500,6 +502,13 @@ namespace WinformTutorials
         }
 
         private bool ctrlKeyHeld;
+
+        public MyPhotos(string fileName):this()
+        {
+            _album = new PhotoAlbum();
+            _album.Open(fileName);
+        }
+
         private void panelImage_MouseDown(object sender, MouseEventArgs e)
         {
             if(ctrlKeyHeld)
@@ -560,6 +569,15 @@ namespace WinformTutorials
             }
         }
 
+        private void MyPhotos_Load(object sender, EventArgs e)
+        {
+            if (IsMdiChild)
+            {
+                menuExit.Text = "&Close";
+                toolStripMain.Visible = false;
+            }
+        }
 
+        public string AlbumFile { get { return _album.FileName; } }
     }
 }

@@ -1,17 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinformTutorials
 {
     public partial class PixelDlg : Form
     {
+        private static Form _mdiForm = null;
+        private static PixelDlg _globalDlg;
+
+        public static Form GlobalMdiParent
+        {
+            get { return _mdiForm; }
+            set { _mdiForm = value; }
+        }
+
+        public static PixelDlg GlobalDialog
+        {
+            get
+            {
+                if (_globalDlg == null || _globalDlg.IsDisposed)
+                {
+                    _globalDlg = new PixelDlg { MdiParent = GlobalMdiParent };
+                }
+                return _globalDlg;
+            }
+        }
+
         public PixelDlg()
         {
             InitializeComponent();
