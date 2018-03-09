@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUTORIALS.MyAlbumEditor", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUTORIALS.MyAlbumExplorer", "TUTORIALS.MyAlbumExplorer\TUTORIALS.MyAlbumExplorer.csproj", "{FBCC9710-B632-4FFF-8544-4FB5B0D160E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUTORIALS.ParentForm", "TUTORIALS.ParentForm\TUTORIALS.ParentForm.csproj", "{795C195E-C53F-4807-8EAA-532214C00E0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{FBCC9710-B632-4FFF-8544-4FB5B0D160E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBCC9710-B632-4FFF-8544-4FB5B0D160E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBCC9710-B632-4FFF-8544-4FB5B0D160E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{795C195E-C53F-4807-8EAA-532214C00E0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{795C195E-C53F-4807-8EAA-532214C00E0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{795C195E-C53F-4807-8EAA-532214C00E0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{795C195E-C53F-4807-8EAA-532214C00E0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
