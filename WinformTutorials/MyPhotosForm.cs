@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Printing;
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
@@ -378,7 +379,7 @@ namespace WinformTutorials
 
         private void UpdatePixelData(int x, int y)
         {
-            if(_dlgPixel == null || !_dlgPixel.Visible)
+            if (_dlgPixel == null || !_dlgPixel.Visible)
                 return;
 
             if (IsMdiChild)
@@ -388,7 +389,7 @@ namespace WinformTutorials
             _dlgPixel.Text = photo.Caption;
 
             var rect = panelImage.ClientRectangle;
-            if(photo == null || !rect.Contains(x,y))
+            if (photo == null || !rect.Contains(x, y))
             {
                 _dlgPixel.Text = (photo == null) ? " " : photo.Caption;
                 _dlgPixel.XVal = 0;
@@ -406,20 +407,20 @@ namespace WinformTutorials
             switch (_selectedMode)
             {
                 case DisplayMode.StretchToFit:
-                    xp = x*bmp.Width/rect.Width;
-                    yp = y*bmp.Height/rect.Height;
+                    xp = x * bmp.Width / rect.Width;
+                    yp = y * bmp.Height / rect.Height;
                     break;
                 case DisplayMode.ScaleToFit:
                     var rect2 = photo.ScaleToFit(rect);
-                    if(!rect2.Contains(x,y))
+                    if (!rect2.Contains(x, y))
                         return;
 
-                    xp = (x - rect2.Left)*bmp.Width/rect2.Width;
-                    yp = (y - rect2.Top)*bmp.Height/rect2.Height;
+                    xp = (x - rect2.Left) * bmp.Width / rect2.Width;
+                    yp = (y - rect2.Top) * bmp.Height / rect2.Height;
                     break;
                 case DisplayMode.ActualSize:
                     var rect3 = new Rectangle(rect.X, rect.Y, photo.Image.Width, photo.Image.Height);
-                    if(!rect3.Contains(x,y))
+                    if (!rect3.Contains(x, y))
                         return;
                     xp = x;
                     yp = y;
@@ -583,5 +584,93 @@ namespace WinformTutorials
         public string AlbumFile { get { return _album.FileName; } }
 
         public string AlbumTitle { get { return _album.Title; } }
+
+        public void PrintCurrentImage(PrintPageEventArgs e)
+        {
+            var photo = _album.CurrentPhoto;
+            if (photo == null)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            float leftMargin = e.MarginBounds.Left;
+            float rightMargin = e.MarginBounds.Right;
+            float topMargin = e.MarginBounds.Top;
+            float bottomMargin = e.MarginBounds.Bottom;
+            float printableWidth = e.MarginBounds.Width;
+            float printableHeight = e.MarginBounds.Height;
+            var g = e.Graphics;
+
+            var printFont = new Font("Times New Roman", 11);
+            float fontHeight = printFont.GetHeight(g);
+            float spaceWidth = g.MeasureString(" ", printFont).Width;
+
+            float imageBoxLength;
+            float xPos = leftMargin;
+            float yPos = topMargin + fontHeight;
+            if (printableWidth < printableHeight)
+            {
+                imageBoxLength = printableWidth * 75 / 100;
+                yPos += imageBoxLength;
+            }
+            else
+            {
+                imageBoxLength = printableHeight * 75 / 100;
+                xPos += imageBoxLength + spaceWidth;
+            }
+
+            var imageBox = new Rectangle((int)leftMargin + 1, (int)topMargin + 1, (int)imageBoxLength, (int)imageBoxLength);
+            g.DrawImage(photo.Image, photo.ScaleToFit(imageBox));
+
+            var printArea = new RectangleF(xPos, yPos, rightMargin - xPos, bottomMargin - yPos);
+            PrintTextString(g, printFont, "FileName:", photo.FileName, ref printArea);
+            PrintTextString(g, printFont, "Caption:", photo.Caption, ref printArea);
+            PrintTextString(g, printFont, "Photographer:", photo.Photographer, ref printArea);
+            PrintTextString(g, printFont, "Notes:", photo.Notes, ref printArea);
+        }
+
+        private void PrintTextString(Graphics g, Font printFont, string nameLabel, string text, ref RectangleF printArea)
+        {
+            float leftMargin = printArea.Left;
+            float rightMargin = printArea.Right;
+            float topMargin = printArea.Top;
+            float bottomMargin = printArea.Bottom;
+
+            float fontHeight = printFont.GetHeight(g);
+            float xPos = printArea.Left;
+            float yPos = topMargin + fontHeight;
+
+            float spaceWidth = g.MeasureString(" ", printFont).Width;
+            float nameWidth = g.MeasureString(nameLabel, printFont).Width;
+
+            if (!printArea.Contains(xPos + nameWidth, yPos))
+                return;
+
+            g.DrawString(nameLabel, printFont, Brushes.Black, new PointF(xPos, yPos));
+            leftMargin += nameWidth + spaceWidth;
+            xPos = leftMargin;
+            var words = text.Split(" \r\t\n\0".ToCharArray());
+            foreach (string word in words)
+            {
+                float wordWidth = g.MeasureString(word, printFont).Width;
+                if (Math.Abs(wordWidth) <= 0.0000001)
+                    continue;
+
+                if (xPos + wordWidth > rightMargin)
+                {
+                    xPos = leftMargin;
+                    yPos += fontHeight;
+
+                    if (yPos > bottomMargin)
+                        break;
+                }
+                g.DrawString(word, printFont, Brushes.Black, new PointF(xPos, yPos));
+                xPos += wordWidth;
+            }
+
+            printArea.Y = yPos;
+            printArea.Height = bottomMargin - yPos;
+        }
     }
 }

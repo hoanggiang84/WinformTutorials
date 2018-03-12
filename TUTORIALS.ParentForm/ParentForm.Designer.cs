@@ -36,19 +36,21 @@
             this.menuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuDumb3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuDumb4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuDumb5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPageSetup = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPrintPreview = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.menuDumb6 = new System.Windows.Forms.ToolStripMenuItem();
-            this.imageListParent = new System.Windows.Forms.ImageList(this.components);
-            this.toolStripParent = new System.Windows.Forms.ToolStrip();
+            this.menuDumb1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuDumb2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.arrangeIconsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tileHorizontalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tileVerticalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuDumb1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuDumb2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageListParent = new System.Windows.Forms.ImageList(this.components);
+            this.toolStripParent = new System.Windows.Forms.ToolStrip();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.printDoc = new System.Drawing.Printing.PrintDocument();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,11 +73,12 @@
             this.menuNew,
             this.menuOpen,
             this.toolStripSeparator2,
-            this.menuExit,
-            this.menuDumb3,
-            this.menuDumb4,
-            this.menuDumb5,
-            this.menuDumb6});
+            this.menuPageSetup,
+            this.menuPrintPreview,
+            this.menuPrint,
+            this.menuDumb6,
+            this.toolStripSeparator1,
+            this.menuExit});
             this.menuFile.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
             this.menuFile.MergeIndex = 0;
             this.menuFile.Name = "menuFile";
@@ -118,31 +121,29 @@
             this.menuExit.Text = "E&xit";
             this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
             // 
-            // menuDumb3
+            // menuPageSetup
             // 
-            this.menuDumb3.MergeAction = System.Windows.Forms.MergeAction.Remove;
-            this.menuDumb3.MergeIndex = 3;
-            this.menuDumb3.Name = "menuDumb3";
-            this.menuDumb3.Size = new System.Drawing.Size(152, 22);
-            this.menuDumb3.Text = "3";
-            this.menuDumb3.Visible = false;
+            this.menuPageSetup.MergeIndex = 3;
+            this.menuPageSetup.Name = "menuPageSetup";
+            this.menuPageSetup.Size = new System.Drawing.Size(152, 22);
+            this.menuPageSetup.Text = "Page Set&up...";
+            this.menuPageSetup.Click += new System.EventHandler(this.menuPageSetup_Click);
             // 
-            // menuDumb4
+            // menuPrintPreview
             // 
-            this.menuDumb4.MergeAction = System.Windows.Forms.MergeAction.Remove;
-            this.menuDumb4.MergeIndex = 4;
-            this.menuDumb4.Name = "menuDumb4";
-            this.menuDumb4.Size = new System.Drawing.Size(152, 22);
-            this.menuDumb4.Text = "4";
-            this.menuDumb4.Visible = false;
+            this.menuPrintPreview.MergeIndex = 4;
+            this.menuPrintPreview.Name = "menuPrintPreview";
+            this.menuPrintPreview.Size = new System.Drawing.Size(152, 22);
+            this.menuPrintPreview.Text = "Print Pre&view";
+            this.menuPrintPreview.Click += new System.EventHandler(this.menuPrintPreview_Click);
             // 
-            // menuDumb5
+            // menuPrint
             // 
-            this.menuDumb5.MergeIndex = 5;
-            this.menuDumb5.Name = "menuDumb5";
-            this.menuDumb5.Size = new System.Drawing.Size(152, 22);
-            this.menuDumb5.Text = "5";
-            this.menuDumb5.Visible = false;
+            this.menuPrint.MergeIndex = 5;
+            this.menuPrint.Name = "menuPrint";
+            this.menuPrint.Size = new System.Drawing.Size(152, 22);
+            this.menuPrint.Text = "&Print...";
+            this.menuPrint.Click += new System.EventHandler(this.menuPrint_Click);
             // 
             // menuDumb6
             // 
@@ -152,6 +153,65 @@
             this.menuDumb6.Size = new System.Drawing.Size(152, 22);
             this.menuDumb6.Text = "6";
             this.menuDumb6.Visible = false;
+            // 
+            // menuDumb1
+            // 
+            this.menuDumb1.MergeAction = System.Windows.Forms.MergeAction.Remove;
+            this.menuDumb1.MergeIndex = 1;
+            this.menuDumb1.Name = "menuDumb1";
+            this.menuDumb1.Size = new System.Drawing.Size(25, 20);
+            this.menuDumb1.Text = "1";
+            this.menuDumb1.Visible = false;
+            // 
+            // menuDumb2
+            // 
+            this.menuDumb2.MergeAction = System.Windows.Forms.MergeAction.Remove;
+            this.menuDumb2.MergeIndex = 2;
+            this.menuDumb2.Name = "menuDumb2";
+            this.menuDumb2.Size = new System.Drawing.Size(25, 20);
+            this.menuDumb2.Text = "2";
+            this.menuDumb2.Visible = false;
+            // 
+            // menuWindow
+            // 
+            this.menuWindow.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.arrangeIconsToolStripMenuItem,
+            this.cascadeToolStripMenuItem,
+            this.tileHorizontalToolStripMenuItem,
+            this.tileVerticalToolStripMenuItem});
+            this.menuWindow.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.menuWindow.MergeIndex = 3;
+            this.menuWindow.Name = "menuWindow";
+            this.menuWindow.Size = new System.Drawing.Size(63, 20);
+            this.menuWindow.Text = "&Window";
+            // 
+            // arrangeIconsToolStripMenuItem
+            // 
+            this.arrangeIconsToolStripMenuItem.Name = "arrangeIconsToolStripMenuItem";
+            this.arrangeIconsToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.arrangeIconsToolStripMenuItem.Text = "&Arrange Icons";
+            this.arrangeIconsToolStripMenuItem.Click += new System.EventHandler(this.arrangeIconsToolStripMenuItem_Click);
+            // 
+            // cascadeToolStripMenuItem
+            // 
+            this.cascadeToolStripMenuItem.Name = "cascadeToolStripMenuItem";
+            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.cascadeToolStripMenuItem.Text = "&Cascade";
+            this.cascadeToolStripMenuItem.Click += new System.EventHandler(this.cascadeToolStripMenuItem_Click);
+            // 
+            // tileHorizontalToolStripMenuItem
+            // 
+            this.tileHorizontalToolStripMenuItem.Name = "tileHorizontalToolStripMenuItem";
+            this.tileHorizontalToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.tileHorizontalToolStripMenuItem.Text = "Tile &Horizontal";
+            this.tileHorizontalToolStripMenuItem.Click += new System.EventHandler(this.tileHorizontalToolStripMenuItem_Click);
+            // 
+            // tileVerticalToolStripMenuItem
+            // 
+            this.tileVerticalToolStripMenuItem.Name = "tileVerticalToolStripMenuItem";
+            this.tileVerticalToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.tileVerticalToolStripMenuItem.Text = "Tile &Vertical";
+            this.tileVerticalToolStripMenuItem.Click += new System.EventHandler(this.tileVerticalToolStripMenuItem_Click);
             // 
             // imageListParent
             // 
@@ -172,64 +232,15 @@
             this.toolStripParent.Visible = false;
             this.toolStripParent.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStripParent_ItemClicked);
             // 
-            // menuWindow
+            // toolStripSeparator1
             // 
-            this.menuWindow.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.arrangeIconsToolStripMenuItem,
-            this.cascadeToolStripMenuItem,
-            this.tileHorizontalToolStripMenuItem,
-            this.tileVerticalToolStripMenuItem});
-            this.menuWindow.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.menuWindow.MergeIndex = 3;
-            this.menuWindow.Name = "menuWindow";
-            this.menuWindow.Size = new System.Drawing.Size(63, 20);
-            this.menuWindow.Text = "&Window";
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
-            // arrangeIconsToolStripMenuItem
+            // printDoc
             // 
-            this.arrangeIconsToolStripMenuItem.Name = "arrangeIconsToolStripMenuItem";
-            this.arrangeIconsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.arrangeIconsToolStripMenuItem.Text = "&Arrange Icons";
-            this.arrangeIconsToolStripMenuItem.Click += new System.EventHandler(this.arrangeIconsToolStripMenuItem_Click);
-            // 
-            // cascadeToolStripMenuItem
-            // 
-            this.cascadeToolStripMenuItem.Name = "cascadeToolStripMenuItem";
-            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.cascadeToolStripMenuItem.Text = "&Cascade";
-            this.cascadeToolStripMenuItem.Click += new System.EventHandler(this.cascadeToolStripMenuItem_Click);
-            // 
-            // tileHorizontalToolStripMenuItem
-            // 
-            this.tileHorizontalToolStripMenuItem.Name = "tileHorizontalToolStripMenuItem";
-            this.tileHorizontalToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.tileHorizontalToolStripMenuItem.Text = "Tile &Horizontal";
-            this.tileHorizontalToolStripMenuItem.Click += new System.EventHandler(this.tileHorizontalToolStripMenuItem_Click);
-            // 
-            // tileVerticalToolStripMenuItem
-            // 
-            this.tileVerticalToolStripMenuItem.Name = "tileVerticalToolStripMenuItem";
-            this.tileVerticalToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.tileVerticalToolStripMenuItem.Text = "Tile &Vertical";
-            this.tileVerticalToolStripMenuItem.Click += new System.EventHandler(this.tileVerticalToolStripMenuItem_Click);
-            // 
-            // menuDumb1
-            // 
-            this.menuDumb1.MergeAction = System.Windows.Forms.MergeAction.Remove;
-            this.menuDumb1.MergeIndex = 1;
-            this.menuDumb1.Name = "menuDumb1";
-            this.menuDumb1.Size = new System.Drawing.Size(25, 20);
-            this.menuDumb1.Text = "1";
-            this.menuDumb1.Visible = false;
-            // 
-            // menuDumb2
-            // 
-            this.menuDumb2.MergeAction = System.Windows.Forms.MergeAction.Remove;
-            this.menuDumb2.MergeIndex = 2;
-            this.menuDumb2.Name = "menuDumb2";
-            this.menuDumb2.Size = new System.Drawing.Size(25, 20);
-            this.menuDumb2.Text = "2";
-            this.menuDumb2.Visible = false;
+            this.printDoc.DocumentName = "ImageDocument";
+            this.printDoc.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDoc_PrintPage);
             // 
             // ParentForm
             // 
@@ -260,9 +271,9 @@
         private System.Windows.Forms.ToolStripMenuItem menuExit;
         private System.Windows.Forms.ToolStripMenuItem menuOpen;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem menuDumb3;
-        private System.Windows.Forms.ToolStripMenuItem menuDumb4;
-        private System.Windows.Forms.ToolStripMenuItem menuDumb5;
+        private System.Windows.Forms.ToolStripMenuItem menuPageSetup;
+        private System.Windows.Forms.ToolStripMenuItem menuPrintPreview;
+        private System.Windows.Forms.ToolStripMenuItem menuPrint;
         private System.Windows.Forms.ToolStripMenuItem menuDumb6;
         private System.Windows.Forms.ImageList imageListParent;
         private System.Windows.Forms.ToolStrip toolStripParent;
@@ -273,6 +284,8 @@
         private System.Windows.Forms.ToolStripMenuItem tileVerticalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuDumb1;
         private System.Windows.Forms.ToolStripMenuItem menuDumb2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Drawing.Printing.PrintDocument printDoc;
     }
 }
 

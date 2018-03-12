@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using WinformTutorials.SideForms;
 
@@ -356,5 +357,9 @@ namespace TUTORIALS.Library
             return photograph.GetDisplayText(_displayOption);
         }
 
+        public bool HasPhotoEdits
+        {
+            get { return this.Cast<Photograph>().Any(photograph => photograph.HasEdits); }
+        }
     }
 }

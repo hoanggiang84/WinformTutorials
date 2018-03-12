@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 
 namespace TUTORIALS.Library
 {
-    public class Photograph:IDisposable
+    public class Photograph:IDisposable,IEditableObject
     {
         private const int ThumbSize = 90;
         private readonly string _fileName;
@@ -15,6 +15,14 @@ namespace TUTORIALS.Library
         private DateTime _dateTaken;
         private Bitmap _bitmap;
         private Bitmap _thumbnail;
+        private static Bitmap _invalidImageBitmap;
+        private bool _modified;
+        private bool _editing;
+        private string _editCaption;
+        private DateTime _editDateTaken;
+        private string _editPhotographer;
+        private string _editNotes;
+
 
         public Photograph(string fileName)
         {
@@ -24,13 +32,9 @@ namespace TUTORIALS.Library
             _dateTaken = DateTime.Now;
             _photographer = "unknown";
             _notes = "no notes provided";
+            _modified = false;
+            _editing = false;
         }
-
-        public string Photographer { get { return _photographer; } set { _photographer = value; } }
-
-        public string Notes { get { return _notes; } set { _notes = value; } }
-
-        public DateTime DateTaken { get { return _dateTaken; } set { _dateTaken = value; } }
 
         public string Caption
         {
@@ -41,7 +45,15 @@ namespace TUTORIALS.Library
             }
         }
 
+        public bool IsImageValid { get { return (Image != InvalidPhotoImage); } }
+
+        public DateTime DateTaken { get { return _dateTaken; } set { _dateTaken = value; } }
+
+        public string Photographer { get { return _photographer; } set { _photographer = value; } }
+        
         public string FileName { get { return _fileName; } }
+
+        public string Notes { get { return _notes; } set { _notes = value; } }
 
         public Bitmap Image
         {
@@ -63,7 +75,7 @@ namespace TUTORIALS.Library
             }
         }
 
-        private static Bitmap _invalidImageBitmap;
+
         public static Bitmap InvalidPhotoImage
         {
             get
@@ -85,10 +97,7 @@ namespace TUTORIALS.Library
             }
         }
 
-        public bool IsImageValid
-        {
-            get { return (_bitmap != InvalidPhotoImage); }
-        }
+
 
         public override bool Equals(object obj)
         {
@@ -159,6 +168,8 @@ namespace TUTORIALS.Library
             sw.WriteLine(Notes.Length);
             sw.Write(Notes.ToCharArray());
             sw.WriteLine();
+            _modified = false;
+            _editing = false;
         }
 
         public static Photograph ReadVersion66(StreamReader sr)
@@ -221,5 +232,43 @@ namespace TUTORIALS.Library
             }
         }
         public delegate Photograph ReadDelegate(StreamReader sr);
+
+        public void BeginEdit()
+        {
+            if (!_editing)
+            {
+                _editCaption = Caption;
+                _editDateTaken = DateTaken;
+                _editPhotographer = Photographer;
+                _editNotes = Notes;
+                _editing = true;
+            }
+        }
+
+        public void EndEdit()
+        {
+            if(_editing)
+            {
+                _modified = Caption != _editCaption
+                            || Photographer != _editPhotographer
+                            || DateTaken != _editDateTaken
+                            || Notes != _editNotes;
+                _editing = false;
+            }
+        }
+
+        public void CancelEdit()
+        {
+            if (_editing)
+            {
+                Caption = _editCaption;
+                Photographer = _editPhotographer;
+                DateTaken = _editDateTaken;
+                Notes = _editNotes;
+                _editing = false;
+            }
+        }
+
+        public bool HasEdits { get { return _modified; } }
     }
 }

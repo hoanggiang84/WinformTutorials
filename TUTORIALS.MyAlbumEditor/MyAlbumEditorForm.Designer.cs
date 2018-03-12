@@ -76,7 +76,6 @@
             this.comboBoxAlbums.Location = new System.Drawing.Point(6, 21);
             this.comboBoxAlbums.Name = "comboBoxAlbums";
             this.comboBoxAlbums.Size = new System.Drawing.Size(259, 21);
-            this.comboBoxAlbums.Sorted = true;
             this.comboBoxAlbums.TabIndex = 2;
             this.comboBoxAlbums.SelectedIndexChanged += new System.EventHandler(this.comboBoxAlbums_SelectedIndexChanged);
             // 
@@ -261,7 +260,7 @@
             this.monthCalendarPhotoDate.TabIndex = 0;
             this.monthCalendarPhotoDate.MouseDown += new System.Windows.Forms.MouseEventHandler(this.monthCalendarPhotoDate_MouseDown);
             // 
-            // MainForm
+            // MyAlbumEditorForm
             // 
             this.AcceptButton = this.buttonClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -270,8 +269,10 @@
             this.Controls.Add(this.tabControlPhotos);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.groupBoxAlbums);
-            this.Name = "MainForm";
+            this.Name = "MyAlbumEditorForm";
             this.Text = "MyAlbumEditor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MyAlbumEditorForm_FormClosing);
+            this.Load += new System.EventHandler(this.MyAlbumEditorForm_Load);
             this.groupBoxAlbums.ResumeLayout(false);
             this.contextMenu.ResumeLayout(false);
             this.tabControlPhotos.ResumeLayout(false);

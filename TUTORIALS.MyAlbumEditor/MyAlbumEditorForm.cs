@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TUTORIALS.Library;
 using TUTORIALS.Library.Forms;
@@ -22,13 +17,6 @@ namespace TUTORIALS.MyAlbumEditor
         public MyAlbumEditorForm()
         {
             InitializeComponent();
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            _album = new PhotoAlbum();
-            comboBoxAlbums.Items.AddRange(Directory.GetFiles(PhotoAlbum.DefaultDir, "*.abm"));
-            base.OnLoad(e);
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -49,12 +37,6 @@ namespace TUTORIALS.MyAlbumEditor
             }
 
             _album = new PhotoAlbum();
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            CloseAlbum();
-            base.OnClosing(e);
         }
 
         private void OpenAlbum(string fileName)
@@ -335,7 +317,7 @@ namespace TUTORIALS.MyAlbumEditor
                 {
                     if(_album[i].DateTaken.Date == info.Time.Date)
                     {
-                        var newPhotoItem = new ToolStripMenuItem()
+                        var newPhotoItem = new ToolStripMenuItem
                                                {
                                                    Tag = 1,
                                                    Text = _album[i].FileName
@@ -362,6 +344,17 @@ namespace TUTORIALS.MyAlbumEditor
             _album.CurrentPosition = index;
             using (var dlg = new PhotoEditDlg(_album))
                 return (dlg.ShowDialog() == DialogResult.OK);
+        }
+
+        private void MyAlbumEditorForm_Load(object sender, EventArgs e)
+        {
+            _album = new PhotoAlbum();
+            comboBoxAlbums.DataSource = Directory.GetFiles(PhotoAlbum.DefaultDir, "*.abm");
+        }
+
+        private void MyAlbumEditorForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            CloseAlbum();
         }
     }
 }

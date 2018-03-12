@@ -100,7 +100,7 @@ namespace TUTORIALS.ParentForm
             }
             else
             {
-                Text = string.Format("MyPhotos MDI {0:#}.{1.#}", ver.Major, ver.Minor);
+                Text = string.Format("MyPhotos MDI {0:#}.{1:#}", ver.Major, ver.Minor);
             }
         }
 
@@ -135,6 +135,36 @@ namespace TUTORIALS.ParentForm
         private void tileVerticalToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LayoutMdi(MdiLayout.TileVertical);
+        }
+
+        private void menuPageSetup_Click(object sender, EventArgs e)
+        {
+            var dlg = new PageSetupDialog{ Document = printDoc };
+            dlg.ShowDialog();
+        }
+
+        private void menuPrintPreview_Click(object sender, EventArgs e)
+        {
+            var dlg = new PrintPreviewDialog{ Document = printDoc };
+            dlg.ShowDialog();
+        }
+
+        private void printDoc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            var f = ActiveMdiChild as MyPhotosForm;
+            if (f != null)
+                f.PrintCurrentImage(e);
+            else 
+                e.Cancel = true;
+        }
+
+        private void menuPrint_Click(object sender, EventArgs e)
+        {
+            var dlg = new PrintDialog {Document = printDoc};
+            if(dlg.ShowDialog() == DialogResult.OK)
+            {
+                printDoc.Print();
+            }
         }
     }
 }
