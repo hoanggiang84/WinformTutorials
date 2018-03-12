@@ -7,7 +7,7 @@ using TUTORIALS.Library.Forms;
 
 namespace WinformTutorials
 {
-    public partial class MyPhotos : Form
+    public partial class MyPhotosForm : Form
     {
         protected PhotoAlbum _album = new PhotoAlbum();
         private DisplayMode _selectedMode = DisplayMode.ScaleToFit;
@@ -29,7 +29,7 @@ namespace WinformTutorials
         }
            
 
-        public MyPhotos()
+        public MyPhotosForm()
         {
             InitializeComponent();
             InitToolStripItems();
@@ -72,6 +72,7 @@ namespace WinformTutorials
                 _album.Open(dlg.FileName);
                 _album.FileName = dlg.FileName;
                 _album.ResetAlbumChanged();
+                SetTitleBar();
 
             }
             catch (Exception ex)
@@ -503,10 +504,11 @@ namespace WinformTutorials
 
         private bool ctrlKeyHeld;
 
-        public MyPhotos(string fileName):this()
+        public MyPhotosForm(string fileName):this()
         {
             _album = new PhotoAlbum();
             _album.Open(fileName);
+            SetTitleBar();
         }
 
         private void panelImage_MouseDown(object sender, MouseEventArgs e)
@@ -579,5 +581,7 @@ namespace WinformTutorials
         }
 
         public string AlbumFile { get { return _album.FileName; } }
+
+        public string AlbumTitle { get { return _album.Title; } }
     }
 }

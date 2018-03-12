@@ -19,7 +19,7 @@ namespace TUTORIALS.ParentForm
 
         private void menuNew_Click(object sender, EventArgs e)
         {
-            var newChild = new MyPhotos {MdiParent = this};
+            var newChild = new MyPhotosForm {MdiParent = this};
             newChild.Show();
         }
 
@@ -39,7 +39,7 @@ namespace TUTORIALS.ParentForm
                     {
                         foreach (Form f in MdiChildren)
                         {
-                            var mf = f as MyPhotos;
+                            var mf = f as MyPhotosForm;
                             if (mf != null)
                             {
                                 if(mf.AlbumFile == dlg.FileName)
@@ -54,7 +54,7 @@ namespace TUTORIALS.ParentForm
                             }
                         }
 
-                        var form = new MyPhotos(dlg.FileName) {MdiParent = this};
+                        var form = new MyPhotosForm(dlg.FileName) {MdiParent = this};
                         form.Show();
                     }
                     catch (Exception ex)
@@ -68,7 +68,7 @@ namespace TUTORIALS.ParentForm
 
         private void ParentForm_MdiChildActivate(object sender, EventArgs e)
         {
-            var child = ActiveMdiChild as MyPhotos;
+            var child = ActiveMdiChild as MyPhotosForm;
             if(child != null)
             {
                 ToolStripManager.Merge(child.toolStripMain, toolStripParent);
@@ -82,6 +82,26 @@ namespace TUTORIALS.ParentForm
                                              toolStripParent.Hide();
                                          };
             }
+            SetTitleBar();
+        }
+
+        private void SetTitleBar()
+        {
+            var ver = new Version(Application.ProductVersion);
+            var titleBar = "{0} - MyPhotos MDI {1:#}.{2:#}";
+            if(ActiveMdiChild is MyPhotosForm)
+            {
+                var albumTitle = ((MyPhotosForm) ActiveMdiChild).AlbumTitle;
+                Text = string.Format(titleBar, albumTitle, ver.Major, ver.Minor);
+            }
+            else if (ActiveMdiChild is PixelDlg)
+            {
+                Text = string.Format(titleBar, "Pixel Data", ver.Major, ver.Minor);
+            }
+            else
+            {
+                Text = string.Format("MyPhotos MDI {0:#}.{1.#}", ver.Major, ver.Minor);
+            }
         }
 
         private void toolStripParent_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -94,6 +114,27 @@ namespace TUTORIALS.ParentForm
         private void ParentForm_Load(object sender, EventArgs e)
         {
             PixelDlg.GlobalMdiParent = this;
+            SetTitleBar();
+        }
+
+        private void arrangeIconsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LayoutMdi(MdiLayout.ArrangeIcons);
+        }
+
+        private void cascadeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LayoutMdi(MdiLayout.Cascade);
+        }
+
+        private void tileHorizontalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LayoutMdi(MdiLayout.TileHorizontal);
+        }
+
+        private void tileVerticalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LayoutMdi(MdiLayout.TileVertical);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace TUTORIALS.MyAlbumExplorer
         FileName
     }
 
-    public partial class MainForm : Form
+    public partial class MyAlbumExplorerForm : Form
     {
         // Acording to imageLists
         private const int PhotoIndex = 0;
@@ -39,7 +39,7 @@ namespace TUTORIALS.MyAlbumExplorer
         private PhotoAlbum _album;
         private static Pen borderPen = new Pen(SystemColors.WindowFrame);
 
-        public MainForm()
+        public MyAlbumExplorerForm()
         {
             InitializeComponent();
         }

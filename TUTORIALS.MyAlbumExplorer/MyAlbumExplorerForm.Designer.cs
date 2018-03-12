@@ -1,6 +1,6 @@
 ﻿namespace TUTORIALS.MyAlbumExplorer
 {
-    partial class MainForm
+    partial class MyAlbumExplorerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyAlbumExplorerForm));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Photo 1", 0, 5);
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Album 1", 1, 3, new System.Windows.Forms.TreeNode[] {
             treeNode1});

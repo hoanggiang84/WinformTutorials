@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{11039ECB-D2A7-46C0-96D9-BB24C057827E}</ProjectGuid>
+    <ProjectGuid>{DFE9BD0A-0FD1-4C08-B72F-52E7D44A1795}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WinformTutorials</RootNamespace>
-    <AssemblyName>WinformTutorials</AssemblyName>
+    <RootNamespace>TUTORIALS.MyAlbumData</RootNamespace>
+    <AssemblyName>TUTORIALS.MyAlbumData</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,9 +31,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Camera.ico</ApplicationIcon>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,44 +44,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="SideForms\CaptionDlg.cs">
+    <Compile Include="MyAlbumDataForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SideForms\CaptionDlg.Designer.cs">
-      <DependentUpon>CaptionDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MyPhotosForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MyPhotosForm.Designer.cs">
-      <DependentUpon>MyPhotosForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SideForms\PixelDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SideForms\PixelDlg.Designer.cs">
-      <DependentUpon>PixelDlg.cs</DependentUpon>
+    <Compile Include="MyAlbumDataForm.Designer.cs">
+      <DependentUpon>MyAlbumDataForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SideForms\CaptionDlg.resx">
-      <DependentUpon>CaptionDlg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MyPhotosForm.resx">
-      <DependentUpon>MyPhotosForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SideForms\PixelDlg.resx">
-      <DependentUpon>PixelDlg.cs</DependentUpon>
+    <EmbeddedResource Include="MyAlbumDataForm.resx">
+      <DependentUpon>MyAlbumDataForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -94,9 +63,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -111,26 +78,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\PhotoAlbum\TUTORIALS.Library.csproj">
       <Project>{daac68ca-e614-4a2e-a853-a956c436bda6}</Project>
       <Name>TUTORIALS.Library</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Camera.ico" />
-    <None Include="Resources\save.jpg" />
-    <None Include="Resources\previous.png" />
-    <None Include="Resources\pencil.png" />
-    <None Include="Resources\open.png" />
-    <None Include="Resources\next.png" />
-    <None Include="Resources\new.png" />
-    <None Include="Resources\album.jpg" />
-    <None Include="Resources\album.png" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

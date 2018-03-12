@@ -1,6 +1,6 @@
 ﻿namespace TUTORIALS.MyAlbumEditor
 {
-    partial class MainForm
+    partial class MyAlbumEditorForm
     {
         /// <summary>
         /// Required designer variable.

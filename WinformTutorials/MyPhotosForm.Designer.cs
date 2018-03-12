@@ -1,6 +1,6 @@
 ﻿namespace WinformTutorials
 {
-    partial class MyPhotos
+    partial class MyPhotosForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,11 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyPhotos));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyPhotosForm));
             this.menuStripMainMenu = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuNew = new System.Windows.Forms.ToolStripMenuItem();
             this.menuOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuSave = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -82,7 +83,6 @@
             this.actualSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonPixelData = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStripMainMenu.SuspendLayout();
             this.contextMenuView.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -113,6 +113,7 @@
             this.toolStripSeparator2,
             this.menuExit});
             this.menuFile.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
+            this.menuFile.MergeIndex = 0;
             this.menuFile.Name = "menuFile";
             this.menuFile.Size = new System.Drawing.Size(37, 20);
             this.menuFile.Text = "&File";
@@ -136,6 +137,13 @@
             this.menuOpen.Size = new System.Drawing.Size(152, 22);
             this.menuOpen.Text = "&Open";
             this.menuOpen.Click += new System.EventHandler(this.menuOpen_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.toolStripSeparator1.MergeIndex = 3;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // menuSave
             // 
@@ -180,6 +188,8 @@
             this.toolStripSeparator5,
             this.menuPhotoProperties,
             this.albumPropertiesToolStripMenuItem});
+            this.menuEdit.MergeAction = System.Windows.Forms.MergeAction.Replace;
+            this.menuEdit.MergeIndex = 1;
             this.menuEdit.Name = "menuEdit";
             this.menuEdit.Size = new System.Drawing.Size(39, 20);
             this.menuEdit.Text = "&Edit";
@@ -230,6 +240,8 @@
             this.menuPrevious,
             this.toolStripSeparator6,
             this.menuPixel});
+            this.menuView.MergeAction = System.Windows.Forms.MergeAction.Replace;
+            this.menuView.MergeIndex = 2;
             this.menuView.Name = "menuView";
             this.menuView.Size = new System.Drawing.Size(44, 20);
             this.menuView.Text = "&View";
@@ -501,19 +513,19 @@
             // scaleToFitToolStripMenuItem
             // 
             this.scaleToFitToolStripMenuItem.Name = "scaleToFitToolStripMenuItem";
-            this.scaleToFitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.scaleToFitToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.scaleToFitToolStripMenuItem.Text = "&Scale to Fit";
             // 
             // stretchToFitToolStripMenuItem
             // 
             this.stretchToFitToolStripMenuItem.Name = "stretchToFitToolStripMenuItem";
-            this.stretchToFitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stretchToFitToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.stretchToFitToolStripMenuItem.Text = "S&tretch to Fit";
             // 
             // actualSizeToolStripMenuItem
             // 
             this.actualSizeToolStripMenuItem.Name = "actualSizeToolStripMenuItem";
-            this.actualSizeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.actualSizeToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.actualSizeToolStripMenuItem.Text = "&Actual Size";
             // 
             // toolStripSeparator9
@@ -531,13 +543,6 @@
             this.toolStripButtonPixelData.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonPixelData.Text = "Show pixel data";
             this.toolStripButtonPixelData.Click += new System.EventHandler(this.toolStripButtonPixelData_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
-            this.toolStripSeparator1.MergeIndex = 3;
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // MyPhotos
             // 

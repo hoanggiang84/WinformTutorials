@@ -13,13 +13,13 @@ using TUTORIALS.Library.Forms;
 
 namespace TUTORIALS.MyAlbumEditor
 {
-    public partial class MainForm : Form
+    public partial class MyAlbumEditorForm : Form
     {
         private PhotoAlbum _album;
         private static Rectangle _drawRect = new Rectangle(0, 0, 45, 45);
         private static SolidBrush _textBrush = new SolidBrush(SystemColors.WindowText);
 
-        public MainForm()
+        public MyAlbumEditorForm()
         {
             InitializeComponent();
         }
