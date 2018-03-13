@@ -55,6 +55,7 @@
             this.menuPrevious = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.menuPixel = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSlideShow = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuView = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.contextImage = new System.Windows.Forms.ToolStripMenuItem();
             this.contextStretch = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,7 +69,7 @@
             this.statusImageSize = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusFileIndex = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusZoomFactor = new System.Windows.Forms.ToolStripStatusLabel();
-            this.panelImage = new System.Windows.Forms.Panel();
+            this.panelPhoto = new System.Windows.Forms.Panel();
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonNew = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonOpen = new System.Windows.Forms.ToolStripButton();
@@ -124,7 +125,7 @@
             this.menuNew.MergeIndex = 0;
             this.menuNew.Name = "menuNew";
             this.menuNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.menuNew.Size = new System.Drawing.Size(152, 22);
+            this.menuNew.Size = new System.Drawing.Size(146, 22);
             this.menuNew.Text = "&New";
             this.menuNew.Click += new System.EventHandler(this.menuNew_Click);
             // 
@@ -134,7 +135,7 @@
             this.menuOpen.MergeIndex = 1;
             this.menuOpen.Name = "menuOpen";
             this.menuOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.menuOpen.Size = new System.Drawing.Size(152, 22);
+            this.menuOpen.Size = new System.Drawing.Size(146, 22);
             this.menuOpen.Text = "&Open";
             this.menuOpen.Click += new System.EventHandler(this.menuOpen_Click);
             // 
@@ -143,7 +144,7 @@
             this.toolStripSeparator1.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.toolStripSeparator1.MergeIndex = 3;
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(143, 6);
             // 
             // menuSave
             // 
@@ -151,7 +152,7 @@
             this.menuSave.MergeIndex = 4;
             this.menuSave.Name = "menuSave";
             this.menuSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.menuSave.Size = new System.Drawing.Size(152, 22);
+            this.menuSave.Size = new System.Drawing.Size(146, 22);
             this.menuSave.Text = "&Save";
             this.menuSave.Click += new System.EventHandler(this.menuSave_Click);
             // 
@@ -160,7 +161,7 @@
             this.menuSaveAs.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.menuSaveAs.MergeIndex = 5;
             this.menuSaveAs.Name = "menuSaveAs";
-            this.menuSaveAs.Size = new System.Drawing.Size(152, 22);
+            this.menuSaveAs.Size = new System.Drawing.Size(146, 22);
             this.menuSaveAs.Text = "Save &As";
             this.menuSaveAs.Click += new System.EventHandler(this.menuSaveAs_Click);
             // 
@@ -169,14 +170,14 @@
             this.toolStripSeparator2.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.toolStripSeparator2.MergeIndex = 6;
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(143, 6);
             // 
             // menuExit
             // 
             this.menuExit.MergeAction = System.Windows.Forms.MergeAction.Replace;
             this.menuExit.MergeIndex = 2;
             this.menuExit.Name = "menuExit";
-            this.menuExit.Size = new System.Drawing.Size(152, 22);
+            this.menuExit.Size = new System.Drawing.Size(146, 22);
             this.menuExit.Text = "&Exit";
             this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
             // 
@@ -239,7 +240,8 @@
             this.menuNext,
             this.menuPrevious,
             this.toolStripSeparator6,
-            this.menuPixel});
+            this.menuPixel,
+            this.menuSlideShow});
             this.menuView.MergeAction = System.Windows.Forms.MergeAction.Replace;
             this.menuView.MergeIndex = 2;
             this.menuView.Name = "menuView";
@@ -311,6 +313,13 @@
             this.menuPixel.Size = new System.Drawing.Size(192, 22);
             this.menuPixel.Text = "Pi&xel Data...";
             this.menuPixel.Click += new System.EventHandler(this.menuPixel_Click);
+            // 
+            // menuSlideShow
+            // 
+            this.menuSlideShow.Name = "menuSlideShow";
+            this.menuSlideShow.Size = new System.Drawing.Size(192, 22);
+            this.menuSlideShow.Text = "&Slide Show...";
+            this.menuSlideShow.Click += new System.EventHandler(this.menuSlideShow_Click);
             // 
             // contextMenuView
             // 
@@ -410,17 +419,20 @@
             this.statusZoomFactor.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.statusZoomFactor.Size = new System.Drawing.Size(10, 17);
             // 
-            // panelImage
+            // panelPhoto
             // 
-            this.panelImage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panelImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelImage.Location = new System.Drawing.Point(0, 24);
-            this.panelImage.Name = "panelImage";
-            this.panelImage.Size = new System.Drawing.Size(396, 307);
-            this.panelImage.TabIndex = 3;
-            this.panelImage.Paint += new System.Windows.Forms.PaintEventHandler(this.panelImage_Paint);
-            this.panelImage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelImage_MouseDown);
-            this.panelImage.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelImage_MouseMove);
+            this.panelPhoto.AllowDrop = true;
+            this.panelPhoto.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panelPhoto.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelPhoto.Location = new System.Drawing.Point(0, 24);
+            this.panelPhoto.Name = "panelPhoto";
+            this.panelPhoto.Size = new System.Drawing.Size(396, 307);
+            this.panelPhoto.TabIndex = 3;
+            this.panelPhoto.DragDrop += new System.Windows.Forms.DragEventHandler(this.panelPhoto_DragDrop);
+            this.panelPhoto.DragEnter += new System.Windows.Forms.DragEventHandler(this.panelPhoto_DragEnter);
+            this.panelPhoto.Paint += new System.Windows.Forms.PaintEventHandler(this.panelPhoto_Paint);
+            this.panelPhoto.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelPhoto_MouseDown);
+            this.panelPhoto.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelPhoto_MouseMove);
             // 
             // toolStripMain
             // 
@@ -544,18 +556,18 @@
             this.toolStripButtonPixelData.Text = "Show pixel data";
             this.toolStripButtonPixelData.Click += new System.EventHandler(this.toolStripButtonPixelData_Click);
             // 
-            // MyPhotos
+            // MyPhotosForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(396, 353);
             this.Controls.Add(this.toolStripMain);
-            this.Controls.Add(this.panelImage);
+            this.Controls.Add(this.panelPhoto);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStripMainMenu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStripMainMenu;
-            this.Name = "MyPhotos";
+            this.Name = "MyPhotosForm";
             this.Text = "My Photo";
             this.Deactivate += new System.EventHandler(this.MyPhotos_Deactivate);
             this.Load += new System.EventHandler(this.MyPhotos_Load);
@@ -609,7 +621,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem contextNext;
         private System.Windows.Forms.ToolStripMenuItem contextPrevious;
-        private System.Windows.Forms.Panel panelImage;
+        private System.Windows.Forms.Panel panelPhoto;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem menuPhotoProperties;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
@@ -630,6 +642,7 @@
         private System.Windows.Forms.ToolStripMenuItem actualSizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         public System.Windows.Forms.ToolStrip toolStripMain;
+        private System.Windows.Forms.ToolStripMenuItem menuSlideShow;
 
 
     }

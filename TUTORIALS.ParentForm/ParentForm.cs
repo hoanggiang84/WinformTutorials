@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using TUTORIALS.Library;
 using WinformTutorials;
+using WinformTutorials.SideForms;
 
 namespace TUTORIALS.ParentForm
 {
@@ -165,6 +166,22 @@ namespace TUTORIALS.ParentForm
             {
                 printDoc.Print();
             }
+        }
+
+        private void menuAbout_Click(object sender, EventArgs e)
+        {
+            var ver = new Version(Application.ProductVersion);
+            var dlg = new AboutBox
+            {
+                IsMdiApplication = true,
+                AboutText = string.Format("MyPhotos (MDI) Application, Version {0:#}.{1:#}\n" +
+                                          "Sample for \"Windows Forms Programming with C#\"\n" +
+                                          "by Erik Brown\nCopyright (C) 2001 Manning Publications Co.", ver.Major, ver.Minor),
+                Owner = this,
+                Icon = Icon
+            };
+
+            dlg.Show();
         }
     }
 }

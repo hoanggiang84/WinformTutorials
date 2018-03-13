@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using TUTORIALS.Library;
 using TUTORIALS.Library.Forms;
+using WinformTutorials.SideForms;
 
 namespace WinformTutorials
 {
@@ -101,7 +102,7 @@ namespace WinformTutorials
         private void setPhotoDisplayMode(DisplayMode displayMode)
         {
             _selectedMode = displayMode;
-            panelImage.Invalidate();
+            panelPhoto.Invalidate();
             Invalidate();
         }
 
@@ -183,7 +184,7 @@ namespace WinformTutorials
                 toolStripButtonPixelData.Checked = false;
 
             statusStrip.Invalidate();
-            panelImage.Invalidate();
+            panelPhoto.Invalidate();
             base.OnPaint(e);
         }
 
@@ -269,12 +270,12 @@ namespace WinformTutorials
             Invalidate();
         }
 
-        private void panelImage_Paint(object sender, PaintEventArgs e)
+        private void panelPhoto_Paint(object sender, PaintEventArgs e)
         {
             if(_dlgPixel!= null && _nPixelDlgIndex != _album.CurrentPosition)
             {
                 _nPixelDlgIndex = _album.CurrentPosition;
-                var p = panelImage.PointToClient(MousePosition);
+                var p = panelPhoto.PointToClient(MousePosition);
                 UpdatePixelData(p.X, p.Y);
             }
 
@@ -285,33 +286,33 @@ namespace WinformTutorials
                 switch (_selectedMode)
                 {
                     case DisplayMode.ScaleToFit:
-                        panelImage.AutoScroll = false;
-                        g.DrawImage(photo.Image, photo.ScaleToFit(panelImage.DisplayRectangle));
+                        panelPhoto.AutoScroll = false;
+                        g.DrawImage(photo.Image, photo.ScaleToFit(panelPhoto.DisplayRectangle));
                         break;
                     case DisplayMode.StretchToFit:
-                        panelImage.AutoScroll = false;
-                        g.DrawImage(photo.Image, panelImage.DisplayRectangle);
+                        panelPhoto.AutoScroll = false;
+                        g.DrawImage(photo.Image, panelPhoto.DisplayRectangle);
                         break;
                     case DisplayMode.ActualSize:
-                        panelImage.AutoScroll = true;
+                        panelPhoto.AutoScroll = true;
                         g.DrawImage(photo.Image,
-                            panelImage.AutoScrollPosition.X,
-                            panelImage.AutoScrollPosition.Y,
+                            panelPhoto.AutoScrollPosition.X,
+                            panelPhoto.AutoScrollPosition.Y,
                             photo.Image.Width,
                             photo.Image.Height);
-                        panelImage.AutoScrollMinSize = photo.Image.Size;
+                        panelPhoto.AutoScrollMinSize = photo.Image.Size;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
 
                 if(!ctrlKeyHeld)
-                    panelImage.ContextMenuStrip = contextMenuView;
+                    panelPhoto.ContextMenuStrip = contextMenuView;
             }
             else
             {
                 e.Graphics.Clear(SystemColors.Control);
-                panelImage.ContextMenuStrip = null;
+                panelPhoto.ContextMenuStrip = null;
             }
         }
 
@@ -372,7 +373,7 @@ namespace WinformTutorials
                 _dlgPixel = PixelDlg.GlobalDialog;
 
             _nPixelDlgIndex = _album.CurrentPosition;
-            var p = panelImage.PointToClient(MousePosition);
+            var p = panelPhoto.PointToClient(MousePosition);
             UpdatePixelData(p.X, p.Y);
             _dlgPixel.Show();
         }
@@ -388,7 +389,7 @@ namespace WinformTutorials
             var photo = _album.CurrentPhoto;
             _dlgPixel.Text = photo.Caption;
 
-            var rect = panelImage.ClientRectangle;
+            var rect = panelPhoto.ClientRectangle;
             if (photo == null || !rect.Contains(x, y))
             {
                 _dlgPixel.Text = (photo == null) ? " " : photo.Caption;
@@ -439,7 +440,7 @@ namespace WinformTutorials
             _dlgPixel.Focus();
         }
 
-        private void panelImage_MouseMove(object sender, MouseEventArgs e)
+        private void panelPhoto_MouseMove(object sender, MouseEventArgs e)
         {
             UpdatePixelData(e.X, e.Y);
         }
@@ -497,8 +498,8 @@ namespace WinformTutorials
                     break;
                 case Keys.ControlKey:
                     ctrlKeyHeld = true;
-                    panelImage.Cursor = Cursors.SizeWE;
-                    panelImage.ContextMenuStrip = null;
+                    panelPhoto.Cursor = Cursors.SizeWE;
+                    panelPhoto.ContextMenuStrip = null;
                     break;
             }
         }
@@ -512,7 +513,7 @@ namespace WinformTutorials
             SetTitleBar();
         }
 
-        private void panelImage_MouseDown(object sender, MouseEventArgs e)
+        private void panelPhoto_MouseDown(object sender, MouseEventArgs e)
         {
             if(ctrlKeyHeld)
             {
@@ -524,6 +525,20 @@ namespace WinformTutorials
                     case MouseButtons.Right:
                         menuNext.PerformClick();
                         break;
+                }
+            }
+            else
+            {
+                var photo = _album.CurrentPhoto;
+                if(photo != null)
+                {
+                    var data = new DataObject();
+                    var fileArray = new string[1];
+                    fileArray[0] = photo.FileName;
+                    data.SetData(DataFormats.FileDrop, fileArray);
+                    data.SetData(DataFormats.Text, photo.Caption);
+
+                    panelPhoto.DoDragDrop(data, DragDropEffects.Copy);
                 }
             }
         }
@@ -541,8 +556,8 @@ namespace WinformTutorials
         private void ReleaseControlKey()
         {
             ctrlKeyHeld = false;
-            panelImage.Cursor = Cursors.Default;
-            panelImage.ContextMenuStrip = contextMenuView;
+            panelPhoto.Cursor = Cursors.Default;
+            panelPhoto.ContextMenuStrip = contextMenuView;
         }
 
         private void MyPhotos_Deactivate(object sender, EventArgs e)
@@ -671,6 +686,45 @@ namespace WinformTutorials
 
             printArea.Y = yPos;
             printArea.Height = bottomMargin - yPos;
+        }
+
+        private void menuSlideShow_Click(object sender, EventArgs e)
+        {
+            using (var f = new SlideShowForm(_album))
+            {
+                f.ShowDialog();
+            }
+        }
+
+        private void panelPhoto_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
+        }
+
+        private void panelPhoto_DragDrop(object sender, DragEventArgs e)
+        {
+            var obj = e.Data.GetData(DataFormats.FileDrop);
+            var files = obj as Array;
+            int index = -1;
+            foreach (var o in files)
+            {
+                var s = o as string;
+                if(!string.IsNullOrWhiteSpace(s))
+                {
+                    var photo = new Photograph(s);
+                    index = _album.IndexOf(photo);
+                    if(index < 0)
+                    {
+                        index = _album.Add(photo);
+                    }
+                }
+            }
+
+            if(index >= 0)
+            {
+                _album.CurrentPosition = index;
+                Invalidate();
+            }
         }
     }
 }
