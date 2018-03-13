@@ -57,6 +57,7 @@
             this.labelIcon.Name = "labelIcon";
             this.labelIcon.Size = new System.Drawing.Size(50, 50);
             this.labelIcon.TabIndex = 0;
+            this.labelIcon.Click += new System.EventHandler(this.labelIcon_Click);
             // 
             // labelAboutText
             // 
@@ -100,7 +101,6 @@
             this.webBrowserBookSite.Location = new System.Drawing.Point(12, 100);
             this.webBrowserBookSite.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowserBookSite.Name = "webBrowserBookSite";
-            this.webBrowserBookSite.ScriptErrorsSuppressed = true;
             this.webBrowserBookSite.Size = new System.Drawing.Size(360, 20);
             this.webBrowserBookSite.TabIndex = 4;
             this.webBrowserBookSite.Url = new System.Uri("https://www.manning.com/books/windows-forms-programming-with-c-sharp", System.UriKind.Absolute);
@@ -121,6 +121,7 @@
             this.Name = "AboutBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About MyPhotos";
+            this.Load += new System.EventHandler(this.AboutBox_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
